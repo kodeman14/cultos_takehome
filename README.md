@@ -22,30 +22,27 @@ NOTE: Your implementation MUST be written in JavaScript -- not TypeScript!
 ### Task 1:
 - Create My Activity Page based on the provided screenshot
 - It should closely mimic the look of the screenshot
- 	
+
 ### Task 2: (Use Axios) - On page load
 - query using [POST] to /api/MyActivity/list to populate the table
 - You will receive the following data to populate the table
-	
-	```[
-		{
-				"id":"1",
-				"description":"Sharing Post",
-				"socialPlatform":"Instagram",
-				"socialType":"Liked",
-				"pointsEarned":"",
-				"date":""
-		},
-		{
-				"id":"2",
-				"description":"Sharing Liked",
-				"socialPlatform":"Facebook",
-				"socialType":"Shared",
-				"pointsEarned":"",
-				"date":""
-		}
-	]```
-
+	```
+	[{
+		"id":"1",
+		"description":"Sharing Post",
+		"socialPlatform":"Instagram",
+		"socialType":"Liked",
+		"pointsEarned":"",
+		"date":""
+	}, {
+		"id":"2",
+		"description":"Sharing Liked",
+		"socialPlatform":"Facebook",
+		"socialType":"Shared",
+		"pointsEarned":"",
+		"date":""
+	}]
+	```
 - The icons should display platform icon (fontAwesome) based on the socialPlatform data
 - socialPlatform - Options: ['Instagram', 'Facebook', 'Twitter']
 - socialType - Options: ['Liked', 'Shared', 'Post']
@@ -64,24 +61,25 @@ NOTE: Your implementation MUST be written in JavaScript -- not TypeScript!
 		- Use /api/MyActivity/create [POST]
 		- Use the following JSON structure to post your data
 
-			```{
+			```
+			{
 				"description":"",
 				"socialPlatform":"",
 				"socialType":"",
 				"pointsEarned":"",
 				"date":""
-			}```
-
+			}
+			```
 		- Modal should close, and the table should be updated dynamically
 - If I refresh the page the newly created row should still be visible
 - Style the modal
 
 ### Task 4: (Edit/Delete functionality)
-- On Edit:
+- On *Edit*:
 	- It should populate the modal to edit the row
 	- On Submit it should update the data on the row using array/object manipulation
 	- If I refresh the page the edited row should return to the default state
-- On Delete:
+- On *Delete*:
 	- It should delete the row using array/object manipulation
 	- If I refresh the page the deleted row should re-appear
 
