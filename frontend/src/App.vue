@@ -109,10 +109,12 @@ nav a.router-link-exact-active:hover {
           type: 'success'
         })
       },
+      convertToIcon(platform) {
+        switch(platform) {
+          default:
+            return 'nothing'
 }
-
-nav a:first-of-type {
-  border: 0;
+      },
 }
 
 @media (min-width: 1024px) {
@@ -206,6 +208,53 @@ nav a:first-of-type {
       </el-table>
   </el-card>
 
+  <!-- dialog component -->
+  <el-dialog v-model="modalVisible" :title="editFlag ? translations.editActivityText : translations.createActivityText">
+    <el-form ref="ruleFormRef" :model="activityForm" :rules="inputRules" label-position="top">
+      <el-form-item :label="translations.modalInputs.detailsLabel" prop="description">
+        <el-col :span="18">
+          <el-input
+            clearable
+            type="text"
+            :minLength="descMinLength"
+            :maxLength="descMaxLength"
+            v-model="activityForm.description"
+            :placeholder="translations.placeholders.detailsInputText"
+          >
+            <template #prepend>
+              <span>{{translations.placeholders.thanksForText}}</span>
+            </template>
+            <template #append>
+              <span>{{ constants.descMaxLength - activityForm.description.length}} / {{ constants.descMaxLength }}</span>
+            </template>
+          </el-input>
+        </el-col>
+      </el-form-item>
+      <el-form-item :label="translations.modalInputs.platformLabel" prop="socialPlatform">
+        <el-select v-model="activityForm.socialPlatform" clearable :placeholder="translations.placeholders.platformSelectText">
+          <el-option :label="translations.socialPlatform.twitter" :value="translations.socialPlatform.twitter" />
+          <el-option :label="translations.socialPlatform.facebook" :value="translations.socialPlatform.facebook" />
+          <el-option :label="translations.socialPlatform.instagram" :value="translations.socialPlatform.instagram" />
+        </el-select>
+      </el-form-item>
+      <el-form-item :label="translations.modalInputs.typeLabel" prop="socialType">
+        <el-select v-model="activityForm.socialType" clearable :placeholder="translations.placeholders.typeSelectText">
+          <el-option :label="translations.socialType.liked" :value="translations.socialType.liked" />
+          <el-option :label="translations.socialType.shared" :value="translations.socialType.shared" />
+          <el-option :label="translations.socialType.posted" :value="translations.socialType.posted" />
+        </el-select>
+      </el-form-item>
+      <el-form-item :label="translations.modalInputs.pointsLabel" prop="pointsEarned">
+        <el-input-number
+          type="num"
+          :min="constants.pointsAmtMin"
+          :max="constants.pointsAmtMax"
+          :step="constants.pointsAmtStep"
+          v-model="activityForm.pointsEarned"
+        />
+      </el-form-item>
+    </el-form>
+  </el-dialog>
 </template>
 
 <style scoped>
