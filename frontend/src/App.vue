@@ -68,17 +68,21 @@ header {
           date: new Date()
 }
 
-nav {
-  width: 100%;
-  font-size: 12px;
-  text-align: center;
-  margin-top: 2rem;
-}
+              this.axios.post(constants.apiEndpoint + constants.apiCreate, payload)
+                .then(response => {
+                  this.modalVisible = false
+                  this.getList()
+                  this.calculatePoints()
 
                   ElMessage({
                     message: translations.snackbars.axiosSuccess,
                     type: 'success',
                   })
+                })
+                .catch(error => {
+                  console.error('axios create error', error)
+                  ElMessage.error(translations.snackbars.axiosError)
+                })
 }
 
 nav a.router-link-exact-active:hover {
