@@ -1,34 +1,71 @@
 <script setup>
-import { RouterLink, RouterView } from 'vue-router'
-import HelloWorld from './components/HelloWorld.vue'
-</script>
+  import { ElMessage, ElTable } from 'element-plus'
+  import { reactive, ref, isProxy, toRaw } from 'vue'
 
-<template>
-  <header>
-    <img alt="Vue logo" class="logo" src="@/assets/logo.svg" width="125" height="125" />
+  import { constants } from './assets/constants'
+  import { translations } from './assets/translations'
 
-    <div class="wrapper">
-      <HelloWorld msg="You did it!" />
+  const ruleFormRef = ref()
+  const apiLocal = "http://localhost:1938/api/MyActivity/"
 
-      <nav>
-        <RouterLink to="/">Home</RouterLink>
-        <RouterLink to="/about">About</RouterLink>
-      </nav>
-    </div>
-  </header>
+  const defaultForm = reactive({
+    description: '',
+    socialPlatform: '',
+    socialType: '',
+    pointsEarned: 10,
+  })
 
   <RouterView />
 </template>
 
+  export default {
+    name: 'App',
 <style scoped>
 header {
   line-height: 1.5;
   max-height: 100vh;
+    data() {
+      return {
+        tableData: [],
+        totalPoints: 0,
+        modalVisible: false,
+        activityForm: this.defaultForm,
+        translations: this.translations,
 }
+    },
+    beforeMount() {
+      this.getList()
 
 .logo {
   display: block;
   margin: 0 auto 2rem;
+    },
+    methods: {
+      getList() {
+        this.axios
+        .post(this.apiLocal + 'list')
+        .then(response => {
+          console.log(response.data)
+          this.tableData = response.data
+        })
+        .then(() => this.calculatePoints())
+        .catch(error => {
+          console.error('axios fetch error', error)
+          ElMessage.error(translations.snackbars.serverIssue)
+        })
+      },
+      calculatePoints() {
+        this.totalPoints = 0
+        this.tableData && this.tableData.forEach(row => this.totalPoints += row.pointsEarned)
+      },
+      getRawInfo(info) {
+        return isProxy(info) ? toRaw(info) : info
+      },
+      createRow(formData, formRef) {
+        const formInfo = this.getRawInfo(formData)
+        const payload = {
+          ...formInfo,
+          date: new Date()
 }
 
 nav {
@@ -38,18 +75,28 @@ nav {
   margin-top: 2rem;
 }
 
-nav a.router-link-exact-active {
-  color: var(--color-text);
+                  ElMessage({
+                    message: translations.snackbars.axiosSuccess,
+                    type: 'success',
+                  })
 }
 
 nav a.router-link-exact-active:hover {
   background-color: transparent;
 }
-
-nav a {
-  display: inline-block;
-  padding: 0 1rem;
-  border-left: 1px solid var(--color-border);
+      },
+      openModal(isEditMode, rowData) {
+        this.modalVisible = true
+        if (isEditMode) {
+          this.editFlag = true
+          this.activityForm = rowData
+        } else this.setFormScratch()
+      },
+      closeModal(formRef) {
+        if(!formRef) return
+        formRef.resetFields()
+        this.modalVisible = false
+      },
 }
 
 nav a:first-of-type {
@@ -62,10 +109,33 @@ nav a:first-of-type {
     place-items: center;
     padding-right: calc(var(--section-gap) / 2);
   }
+</script>
 
-  .logo {
-    margin: 0 2rem 0 0;
-  }
+<template>
+  <el-card class="box-card">
+    <!-- main header -->
+    <template #header>
+      <div class="card-header">
+        <el-row>
+          <el-col :span="18">
+            <el-row>
+              <el-col :span="9">
+                <h1 class="font-extrabold text-4xl">{{translations.yourActivityText}}</h1>
+              </el-col>
+              <el-col :span="9">
+                <h1 class="absolute top-2">
+                  {{translations.totalEarnedText}}
+                  <span :class="gradientStyle">{{totalPoints}}</span>
+                </h1>
+              </el-col>
+            </el-row>
+          </el-col>
+          <el-col :span="6">
+            <el-button class="absolute button right-0" type="primary" @click="openModal(false, {})">{{translations.createActivityText}}</el-button>
+          </el-col>
+        </el-row>
+      </div>
+    </template>
 
   header .wrapper {
     display: flex;
@@ -73,13 +143,15 @@ nav a:first-of-type {
     flex-wrap: wrap;
   }
 
-  nav {
-    text-align: left;
-    margin-left: -1rem;
-    font-size: 1rem;
+</template>
 
-    padding: 1rem 0;
-    margin-top: 1rem;
+<style scoped>
+  .box-card {
+    width: 75%;
   }
+
+  .cultos-table {
+    width: auto;
+    overflow: visible;
 }
 </style>
