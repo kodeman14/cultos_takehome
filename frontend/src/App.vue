@@ -62,14 +62,12 @@
         modalVisible: false,
         activityForm: this.defaultForm,
         translations: this.translations,
+        freshFormFields: {},
 }
     },
     beforeMount() {
       this.getList()
-
-.logo {
-  display: block;
-  margin: 0 auto 2rem;
+      this.freshFormFields = { ...this.activityForm }
     },
     methods: {
       getList() {
@@ -92,6 +90,12 @@
       },
       getRawInfo(info) {
         return isProxy(info) ? toRaw(info) : info
+      },
+      setFormScratch() {
+        this.editFlag = false
+        // this.ruleFormRef.resetFields()
+        console.log('default', this.freshFormFields)
+        this.activityForm = { ... this.freshFormFields }
       },
       createRow(formData, formRef) {
         const formInfo = this.getRawInfo(formData)
@@ -141,8 +145,7 @@
         if (isEditMode) {
           this.editFlag = true
           this.activityForm = rowData
-        }
-        // else this.setFormScratch()
+        } else this.setFormScratch()
       },
       closeModal(formRef) {
         if(!formRef) return
