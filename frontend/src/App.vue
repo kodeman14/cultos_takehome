@@ -6,7 +6,8 @@
   import { translations } from './assets/translations'
 
   const ruleFormRef = ref()
-  const apiLocal = "http://localhost:1938/api/MyActivity/"
+  const currPageRef = ref(1)
+  const pageSizeRef = ref(5)
 
   const defaultForm = reactive({
     description: '',
@@ -26,8 +27,11 @@ header {
   max-height: 100vh;
     data() {
       return {
+        pageNum: 1,
+        pageSize: 5,
         tableData: [],
         totalPoints: 0,
+        isEmptyFlag: false,
         modalVisible: false,
         activityForm: this.defaultForm,
         translations: this.translations,
@@ -72,6 +76,7 @@ header {
                 .then(response => {
                   this.modalVisible = false
                   this.tableData.push(response.data)
+                  this.pagedData()
                   this.calculatePoints()
 
                   ElMessage({
@@ -91,10 +96,11 @@ nav a.router-link-exact-active:hover {
       },
       openModal(isEditMode, rowData) {
         this.modalVisible = true
-        if (isEditMode) {
-          this.editFlag = true
-          this.activityForm = rowData
-        } else this.setFormScratch()
+        // if (isEditMode) {
+        //   this.editFlag = true
+        //   this.activityForm = rowData
+        // }
+        // else this.setFormScratch()
       },
       closeModal(formRef) {
         if(!formRef) return
@@ -119,13 +125,24 @@ nav a.router-link-exact-active:hover {
             return 'nothing'
 }
       },
+      handleSizeChange(value) {
+        this.pageSize = value
+        this.pagedData()
+      },
+      handlePageChange(value) {
+        this.pageNum = value
+        this.pagedData()
+      },
+      pagedData() {
+        const rawTable = this.getRawInfo(this.tableData)
+        const multSizeNum = this.pageSize * this.pageNum
+        return rawTable.slice(multSizeNum - this.pageSize, multSizeNum)
+      },
+      checkEmpty() {
+        const rawTable = this.getRawInfo(this.tableData)
+        this.isEmptyFlag = rawTable.length === 0
 }
-
-@media (min-width: 1024px) {
-  header {
-    display: flex;
-    place-items: center;
-    padding-right: calc(var(--section-gap) / 2);
+    },
   }
 </script>
 
@@ -156,6 +173,7 @@ nav a.router-link-exact-active:hover {
     </template>
 
     <!-- table component -->
+    <div v-if="!this.isEmptyFlag">
       <el-table
         :data="this.tableData"
         table-layout="auto"
@@ -210,6 +228,20 @@ nav a.router-link-exact-active:hover {
           </template>
         </el-table-column>
       </el-table>
+      <div class="flex justify-center mt-10">
+        <el-pagination
+          background
+          :page-sizes="[5, 10]"
+          :total="this.tableData.length"
+          v-model:page-size="pageSizeRef"
+          @size-change="handleSizeChange"
+          v-model:currentPage="currPageRef"
+          @current-change="handlePageChange"
+          layout="total, sizes, prev, pager, next"
+        />
+      </div>
+    </div>
+    <div v-else><el-empty :description="translations.errors[ this.isEmptyFlag ? 'emptyTable' : 'noDataLoaded']" /></div>
   </el-card>
 
   <!-- dialog component -->
