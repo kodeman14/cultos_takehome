@@ -28,6 +28,7 @@ header {
       return {
         tableData: [],
         totalPoints: 0,
+        isEmptyFlag: false,
         modalVisible: false,
         activityForm: this.defaultForm,
         translations: this.translations,
@@ -91,10 +92,11 @@ nav a.router-link-exact-active:hover {
       },
       openModal(isEditMode, rowData) {
         this.modalVisible = true
-        if (isEditMode) {
-          this.editFlag = true
-          this.activityForm = rowData
-        } else this.setFormScratch()
+        // if (isEditMode) {
+        //   this.editFlag = true
+        //   this.activityForm = rowData
+        // }
+        // else this.setFormScratch()
       },
       closeModal(formRef) {
         if(!formRef) return
@@ -119,6 +121,9 @@ nav a.router-link-exact-active:hover {
             return 'nothing'
 }
       },
+      checkEmpty() {
+        const rawTable = this.getRawInfo(this.tableData)
+        this.isEmptyFlag = rawTable.length === 0
 }
 
 @media (min-width: 1024px) {
@@ -156,6 +161,7 @@ nav a.router-link-exact-active:hover {
     </template>
 
     <!-- table component -->
+    <div v-if="!this.isEmptyFlag">
       <el-table
         :data="this.tableData"
         table-layout="auto"
@@ -210,6 +216,8 @@ nav a.router-link-exact-active:hover {
           </template>
         </el-table-column>
       </el-table>
+    </div>
+    <div v-else><el-empty :description="translations.errors[ this.isEmptyFlag ? 'emptyTable' : 'noDataLoaded']" /></div>
   </el-card>
 
   <!-- dialog component -->
