@@ -71,7 +71,7 @@ header {
               this.axios.post(constants.apiEndpoint + constants.apiCreate, payload)
                 .then(response => {
                   this.modalVisible = false
-                  this.getList()
+                  this.tableData.push(response.data)
                   this.calculatePoints()
 
                   ElMessage({
