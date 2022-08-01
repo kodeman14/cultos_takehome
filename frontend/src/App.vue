@@ -154,6 +154,12 @@ nav a.router-link-exact-active:hover {
       },
       convertToIcon(platform) {
         switch(platform) {
+          case this.translations.socialPlatform.twitter:
+            return 'twitter'
+          case this.translations.socialPlatform.facebook:
+            return 'facebook'
+          case this.translations.socialPlatform.instagram:
+            return 'instagram'
           default:
             return 'nothing'
 }
