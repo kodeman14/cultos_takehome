@@ -57,6 +57,7 @@
         pageSize: 5,
         tableData: [],
         totalPoints: 0,
+        editFlag: false,
         isEmptyFlag: false,
         modalVisible: false,
         activityForm: this.defaultForm,
@@ -99,6 +100,7 @@
           date: new Date()
 }
 
+        if(!this.editFlag) {
           if (!formRef) return
           formRef.validate((valid, fields) => {
             if (valid) {
@@ -122,17 +124,24 @@
               console.error('data valid error', error)
               ElMessage.error(translations.snackbars.missingFields)
 }
+          })
+        } else { // in edit mode
+          this.editFlag = false
+          this.calculatePoints()
+          this.modalVisible = false
 
-nav a.router-link-exact-active:hover {
-  background-color: transparent;
+          ElMessage({
+            message: translations.snackbars.rowEdit,
+            type: 'success',
+          })
 }
       },
       openModal(isEditMode, rowData) {
         this.modalVisible = true
-        // if (isEditMode) {
-        //   this.editFlag = true
-        //   this.activityForm = rowData
-        // }
+        if (isEditMode) {
+          this.editFlag = true
+          this.activityForm = rowData
+        }
         // else this.setFormScratch()
       },
       closeModal(formRef) {
@@ -143,10 +152,13 @@ nav a.router-link-exact-active:hover {
       editRow(rowData) {
         const rowInfo = this.getRawInfo(rowData)
         console.log('edit', rowInfo)
+        this.openModal(true, rowInfo)
       },
       deleteRow(index) {
         this.tableData.splice(index, 1)
         console.log('deleted', this.tableData)
+        this.pagedData()
+        this.calculatePoints()
         ElMessage({
           message: translations.snackbars.rowDelete,
           type: 'success'
