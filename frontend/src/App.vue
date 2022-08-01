@@ -99,6 +99,9 @@
           date: new Date()
 }
 
+          if (!formRef) return
+          formRef.validate((valid, fields) => {
+            if (valid) {
               this.axios.post(constants.apiEndpoint + constants.apiCreate, payload)
                 .then(response => {
                   this.modalVisible = false
@@ -115,6 +118,9 @@
                   console.error('axios create error', error)
                   ElMessage.error(translations.snackbars.axiosError)
                 })
+            } else {
+              console.error('data valid error', error)
+              ElMessage.error(translations.snackbars.missingFields)
 }
 
 nav a.router-link-exact-active:hover {
