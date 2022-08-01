@@ -8,6 +8,7 @@
   const ruleFormRef = ref()
   const currPageRef = ref(1)
   const pageSizeRef = ref(5)
+  const gradientStyle = 'font-extrabold text-transparent bg-clip-text bg-gradient-to-r from-purple-300 to-pink-400'
 
   const defaultForm = reactive({
     description: '',
