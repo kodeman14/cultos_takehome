@@ -47,18 +47,19 @@ header {
     methods: {
       getList() {
         this.axios
-        .post(this.apiLocal + 'list')
+        .post(constants.apiEndpoint + constants.apiList)
         .then(response => {
           console.log(response.data)
           this.tableData = response.data
+          this.calculatePoints()
         })
-        .then(() => this.calculatePoints())
         .catch(error => {
           console.error('axios fetch error', error)
           ElMessage.error(translations.snackbars.serverIssue)
         })
       },
       calculatePoints() {
+        this.checkEmpty()
         this.totalPoints = 0
         this.tableData && this.tableData.forEach(row => this.totalPoints += row.pointsEarned)
       },
