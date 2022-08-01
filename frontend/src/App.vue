@@ -97,6 +97,18 @@ nav a.router-link-exact-active:hover {
         formRef.resetFields()
         this.modalVisible = false
       },
+      editRow(rowData) {
+        const rowInfo = this.getRawInfo(rowData)
+        console.log('edit', rowInfo)
+      },
+      deleteRow(index) {
+        this.tableData.splice(index, 1)
+        console.log('deleted', this.tableData)
+        ElMessage({
+          message: translations.snackbars.rowDelete,
+          type: 'success'
+        })
+      },
 }
 
 nav a:first-of-type {
@@ -137,11 +149,62 @@ nav a:first-of-type {
       </div>
     </template>
 
+    <!-- table component -->
+      <el-table
+        :data="this.tableData"
+        table-layout="auto"
+        class="cultos-table"
+        header-cell-class-name="font-extrabold text-xl text-black"
+      >
   header .wrapper {
     display: flex;
     place-items: flex-start;
     flex-wrap: wrap;
   }
+        <el-table-column :label="translations.colHeaders.dateCol" sortable prop="date">
+          <template #default="scope">
+            <p>{{scope.row.date.slice(0, 10)}}</p>
+          </template>
+        </el-table-column>
+        <el-table-column :label="translations.colHeaders.detailsCol">
+          <template #default="scope">
+            <p>{{translations.placeholders.thanksForText}} {{scope.row.description}}</p>
+          </template>
+        </el-table-column>
+        <el-table-column :label="translations.colHeaders.activityCol">
+          <template #default="scope">
+          <el-row>
+            <el-space>
+              <font-awesome-icon :icon="['fab', this.convertToIcon(scope.row.socialPlatform)]" />
+              <p>{{scope.row.socialType}}</p>
+            </el-space>
+          </el-row>
+          </template>
+        </el-table-column>
+        <el-table-column :label="translations.colHeaders.earnedCol" sortable prop="pointsEarned">
+          <template #default="scope">
+            <p :class="gradientStyle">+ {{scope.row.pointsEarned}}</p>
+          </template>
+        </el-table-column>
+        <el-table-column :label="translations.colHeaders.actionsCol">
+          <template #default="scope">
+            <el-button @click="editRow(scope.row)">
+              <font-awesome-icon icon="pen-to-square" />
+            </el-button>
+            <el-popconfirm
+              :title="translations.placeholders.deletePopupText"
+              @confirm="deleteRow(scope.$index)"
+            >
+              <template #reference>
+                <el-button>
+                  <font-awesome-icon icon="trash-can" />
+                </el-button>
+              </template>
+            </el-popconfirm>
+          </template>
+        </el-table-column>
+      </el-table>
+  </el-card>
 
 </template>
 
