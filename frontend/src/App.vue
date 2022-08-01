@@ -157,6 +157,8 @@
       deleteRow(index) {
         this.tableData.splice(index, 1)
         console.log('deleted', this.tableData)
+        this.pagedData()
+        this.calculatePoints()
         ElMessage({
           message: translations.snackbars.rowDelete,
           type: 'success'
