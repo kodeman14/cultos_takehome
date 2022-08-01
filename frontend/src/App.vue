@@ -16,15 +16,41 @@
     pointsEarned: 10,
   })
 
-  <RouterView />
-</template>
+  const inputRules = reactive({
+    description: [{
+      required: true,
+      message: translations.errors.descReq, trigger:
+      'blur'
+    }, {
+      min: constants.descMinLength,
+      max: constants.descMaxLength,
+      message: translations.errors.descLength,
+      trigger: 'blur'
+    }],
+    points: [
+      { required: true, message: translations.errors.pointsReq, trigger: 'change' },
+      { type: 'number', message: translations.errors.pointsNum, trigger: 'change' },
+    ],
+    socialPlatform: [{
+      required: true,
+      message: translations.errors.platformReq,
+      trigger: 'change',
+    }],
+    socialType: [{
+      required: true,
+      message: translations.errors.activityReq,
+      trigger: 'change',
+    }],
+  })
+</script>
 
+<script>
   export default {
     name: 'App',
-<style scoped>
-header {
-  line-height: 1.5;
-  max-height: 100vh;
+    // components: {
+    //   CreateModal,
+    //   TableDisplay,
+    // },
     data() {
       return {
         pageNum: 1,
@@ -47,19 +73,20 @@ header {
     methods: {
       getList() {
         this.axios
-        .post(this.apiLocal + 'list')
+        .post(constants.apiEndpoint + constants.apiList)
         .then(response => {
           console.log(response.data)
           this.tableData = response.data
+          this.calculatePoints()
         })
-        .then(() => this.calculatePoints())
         .catch(error => {
           console.error('axios fetch error', error)
           ElMessage.error(translations.snackbars.serverIssue)
         })
       },
       calculatePoints() {
-        this.totalPoints = 0
+        this.checkEmpty()
+        this.totalPoints = 0 //always resets to 0
         this.tableData && this.tableData.forEach(row => this.totalPoints += row.pointsEarned)
       },
       getRawInfo(info) {
@@ -72,6 +99,9 @@ header {
           date: new Date()
 }
 
+          if (!formRef) return
+          formRef.validate((valid, fields) => {
+            if (valid) {
               this.axios.post(constants.apiEndpoint + constants.apiCreate, payload)
                 .then(response => {
                   this.modalVisible = false
@@ -88,6 +118,9 @@ header {
                   console.error('axios create error', error)
                   ElMessage.error(translations.snackbars.axiosError)
                 })
+            } else {
+              console.error('data valid error', error)
+              ElMessage.error(translations.snackbars.missingFields)
 }
 
 nav a.router-link-exact-active:hover {
@@ -121,6 +154,12 @@ nav a.router-link-exact-active:hover {
       },
       convertToIcon(platform) {
         switch(platform) {
+          case this.translations.socialPlatform.twitter:
+            return 'twitter'
+          case this.translations.socialPlatform.facebook:
+            return 'facebook'
+          case this.translations.socialPlatform.instagram:
+            return 'instagram'
           default:
             return 'nothing'
 }
