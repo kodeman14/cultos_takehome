@@ -4,6 +4,8 @@
 
   import { constants } from './assets/constants'
   import { translations } from './assets/translations'
+  import CreateModal from './components/CreateModal.vue'
+  import TableDisplay from './components/TableDisplay.vue'
 
   const ruleFormRef = ref()
   const currPageRef = ref(1)
@@ -48,10 +50,10 @@
 <script>
   export default {
     name: 'App',
-    // components: {
-    //   CreateModal,
-    //   TableDisplay,
-    // },
+    components: {
+      CreateModal,
+      TableDisplay,
+    },
     data() {
       return {
         pageNum: 1,
@@ -61,6 +63,7 @@
         editFlag: false,
         isEmptyFlag: false,
         modalVisible: false,
+        freshFormFields: {},
         activityForm: this.defaultForm,
         translations: this.translations,
         freshFormFields: {},

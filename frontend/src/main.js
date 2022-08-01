@@ -25,8 +25,8 @@ library.add(faPenToSquare);
 const app = createApp(App)
 
 app.component("font-awesome-icon", FontAwesomeIcon)
-  // .component('CreateModal', CreateModal)
-  // .component('TableDisplay', TableDisplay)
+  .component('CreateModal', CreateModal)
+  .component('TableDisplay', TableDisplay)
 app.use(VueAxios, axios)
 app.use(createPinia())
 app.use(ElementPlus)
