@@ -254,6 +254,21 @@ nav a.router-link-exact-active:hover {
         />
       </el-form-item>
     </el-form>
+    <template #footer>
+      <span class="dialog-footer">
+        <el-popconfirm
+          :title="translations.placeholders.cancelPopupText"
+          @confirm="closeModal(ruleFormRef)"
+        >
+          <template #reference>
+            <el-button>{{translations.modalInputs.cancelBtn}}</el-button>
+          </template>
+        </el-popconfirm>
+        <el-button type="primary" @click="createRow(activityForm, ruleFormRef)">
+          {{translations.modalInputs.submitBtn}}
+        </el-button>
+      </span>
+    </template>
   </el-dialog>
 </template>
 
