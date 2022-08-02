@@ -4,10 +4,15 @@
 
   import { constants } from './assets/constants'
   import { translations } from './assets/translations'
+  import CreateModal from './components/CreateModal.vue'
+  import TableDisplay from './components/TableDisplay.vue'
 
+  // declare refs
   const ruleFormRef = ref()
   const currPageRef = ref(1)
   const pageSizeRef = ref(5)
+  const rowSelectRef = ref()
+  const tableDataRef = ref()
 
   const defaultForm = reactive({
     description: '',
@@ -58,11 +63,14 @@
         tableData: [],
         totalPoints: 0,
         editFlag: false,
+        deleteFlag: false,
         isEmptyFlag: false,
+        isServerDown: true,
         modalVisible: false,
+        freshFormFields: {},
         activityForm: this.defaultForm,
         translations: this.translations,
-        freshFormFields: {},
+        // hideColMobile: window.innerWidth < 500,
 }
     },
     beforeMount() {
@@ -76,9 +84,12 @@
         .then(response => {
           console.log(response.data)
           this.tableData = response.data
+
+          this.checkEmpty(false)
           this.calculatePoints()
         })
         .catch(error => {
+          this.checkEmpty(true)
           console.error('axios fetch error', error)
           ElMessage.error(translations.snackbars.serverIssue)
         })
@@ -161,6 +172,7 @@
         this.tableData.splice(index, 1)
         console.log('deleted', this.tableData)
         this.pagedData()
+        this.checkEmpty(false)
         this.calculatePoints()
         ElMessage({
           message: translations.snackbars.rowDelete,
@@ -192,9 +204,10 @@
         const multSizeNum = this.pageSize * this.pageNum
         return rawTable.slice(multSizeNum - this.pageSize, multSizeNum)
       },
-      checkEmpty() {
+      checkEmpty(dbIssue) {
         const rawTable = this.getRawInfo(this.tableData)
-        this.isEmptyFlag = rawTable.length === 0
+        this.isServerDown = dbIssue
+        if (!dbIssue) this.isEmptyFlag = rawTable.length === 0
 }
     },
   }
@@ -214,7 +227,7 @@
               <el-col :span="9">
                 <h1 class="absolute top-2">
                   {{translations.totalEarnedText}}
-                  <span :class="gradientStyle">{{totalPoints}}</span>
+                  <span :class="constants.gradientStyle.join(' ')">{{this.isServerDown ? constants.noPointsExist : this.totalPoints}}</span>
                 </h1>
               </el-col>
             </el-row>
@@ -227,18 +240,17 @@
     </template>
 
     <!-- table component -->
-    <div v-if="!this.isEmptyFlag">
+    <div v-if="!this.isEmptyFlag && !this.isServerDown">
       <el-table
-        :data="this.tableData"
+        ref="tableDataRef"
         table-layout="auto"
         class="cultos-table"
+        :data="this.pagedData()"
         header-cell-class-name="font-extrabold text-xl text-black"
       >
-  header .wrapper {
-    display: flex;
-    place-items: flex-start;
-    flex-wrap: wrap;
-  }
+        <!-- :row-key="id" -->
+        <!-- v-if="!this.hideColMobile" -->
+        <!-- @current-change="handleRowClick" -->
         <el-table-column :label="translations.colHeaders.dateCol" sortable prop="date">
           <template #default="scope">
             <p>{{scope.row.date.slice(0, 10)}}</p>
@@ -261,7 +273,7 @@
         </el-table-column>
         <el-table-column :label="translations.colHeaders.earnedCol" sortable prop="pointsEarned">
           <template #default="scope">
-            <p :class="gradientStyle">+ {{scope.row.pointsEarned}}</p>
+            <p :class="constants.gradientStyle.join(' ')">+ {{scope.row.pointsEarned}}</p>
           </template>
         </el-table-column>
         <el-table-column :label="translations.colHeaders.actionsCol">
@@ -270,6 +282,9 @@
               <font-awesome-icon icon="pen-to-square" />
             </el-button>
             <el-popconfirm
+              trigger="hover"
+              placement="right"
+              persistent="false"
               :title="translations.placeholders.deletePopupText"
               @confirm="deleteRow(scope.$index)"
             >
@@ -295,12 +310,25 @@
         />
       </div>
     </div>
-    <div v-else><el-empty :description="translations.errors[ this.isEmptyFlag ? 'emptyTable' : 'noDataLoaded']" /></div>
+    <div v-else>
+      <el-empty :description="translations.errors[
+        this.isEmptyFlag
+        ? 'emptyTable'
+        : this.isServerDown
+          ? 'noDataLoaded'
+          : 'otherIssue'
+      ]" />
+    </div>
   </el-card>
 
   <!-- dialog component -->
   <el-dialog v-model="modalVisible" :title="editFlag ? translations.editActivityText : translations.createActivityText">
-    <el-form ref="ruleFormRef" :model="activityForm" :rules="inputRules" label-position="top">
+    <el-form
+      ref="ruleFormRef"
+      :rules="inputRules"
+      label-position="top"
+      :model="activityForm"
+    >
       <el-form-item :label="translations.modalInputs.detailsLabel" prop="description">
         <el-col :span="18">
           <el-input
@@ -337,16 +365,20 @@
       <el-form-item :label="translations.modalInputs.pointsLabel" prop="pointsEarned">
         <el-input-number
           type="num"
-          :min="constants.pointsAmtMin"
           :max="constants.pointsAmtMax"
+          :min="constants.pointsAmtStep"
           :step="constants.pointsAmtStep"
           v-model="activityForm.pointsEarned"
         />
       </el-form-item>
     </el-form>
+
     <template #footer>
       <span class="dialog-footer">
         <el-popconfirm
+          trigger="click"
+          placement="left"
+          persistent="false"
           :title="translations.placeholders.cancelPopupText"
           @confirm="closeModal(ruleFormRef)"
         >
