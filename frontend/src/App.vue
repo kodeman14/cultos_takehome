@@ -8,7 +8,6 @@
   import TableDisplay from './components/TableDisplay.vue'
 
   // declare refs
-  const ruleFormRef = ref()
   const currPageRef = ref(1)
   const pageSizeRef = ref(5)
   const rowSelectRef = ref()
@@ -52,10 +51,10 @@
 <script>
   export default {
     name: 'App',
-    // components: {
-    //   CreateModal,
-    //   TableDisplay,
-    // },
+    components: {
+      CreateModal,
+      // TableDisplay,
+    },
     data() {
       return {
         pageNum: 1,
@@ -136,7 +135,7 @@
                   ElMessage.error(translations.snackbars.axiosError)
                 })
             } else {
-              console.error('data valid error', error)
+              console.error('data valid error', fields)
               ElMessage.error(translations.snackbars.missingFields)
 }
           })
@@ -161,6 +160,7 @@
       closeModal(formRef) {
         if(!formRef) return
         formRef.resetFields()
+        formRef.clearValidate()
         this.modalVisible = false
       },
       editRow(rowData) {
@@ -322,76 +322,13 @@
   </el-card>
 
   <!-- dialog component -->
-  <el-dialog v-model="modalVisible" :title="editFlag ? translations.editActivityText : translations.createActivityText">
-    <el-form
-      ref="ruleFormRef"
-      :rules="inputRules"
-      label-position="top"
-      :model="activityForm"
-    >
-      <el-form-item :label="translations.modalInputs.detailsLabel" prop="description">
-        <el-col :span="18">
-          <el-input
-            clearable
-            type="text"
-            :minLength="descMinLength"
-            :maxLength="descMaxLength"
-            v-model="activityForm.description"
-            :placeholder="translations.placeholders.detailsInputText"
-          >
-            <template #prepend>
-              <span>{{translations.placeholders.thanksForText}}</span>
-            </template>
-            <template #append>
-              <span>{{ constants.descMaxLength - activityForm.description.length}} / {{ constants.descMaxLength }}</span>
-            </template>
-          </el-input>
-        </el-col>
-      </el-form-item>
-      <el-form-item :label="translations.modalInputs.platformLabel" prop="socialPlatform">
-        <el-select v-model="activityForm.socialPlatform" clearable :placeholder="translations.placeholders.platformSelectText">
-          <el-option :label="translations.socialPlatform.twitter" :value="translations.socialPlatform.twitter" />
-          <el-option :label="translations.socialPlatform.facebook" :value="translations.socialPlatform.facebook" />
-          <el-option :label="translations.socialPlatform.instagram" :value="translations.socialPlatform.instagram" />
-        </el-select>
-      </el-form-item>
-      <el-form-item :label="translations.modalInputs.typeLabel" prop="socialType">
-        <el-select v-model="activityForm.socialType" clearable :placeholder="translations.placeholders.typeSelectText">
-          <el-option :label="translations.socialType.liked" :value="translations.socialType.liked" />
-          <el-option :label="translations.socialType.shared" :value="translations.socialType.shared" />
-          <el-option :label="translations.socialType.posted" :value="translations.socialType.posted" />
-        </el-select>
-      </el-form-item>
-      <el-form-item :label="translations.modalInputs.pointsLabel" prop="pointsEarned">
-        <el-input-number
-          type="num"
-          :max="constants.pointsAmtMax"
-          :min="constants.pointsAmtStep"
-          :step="constants.pointsAmtStep"
-          v-model="activityForm.pointsEarned"
+  <CreateModal
+    @create-row="createRow"
+    @close-modal="closeModal"
+    :edit-flag="this.editFlag"
+    :is-visible="this.modalVisible"
+    :activity-form="this.activityForm"
         />
-      </el-form-item>
-    </el-form>
-
-    <template #footer>
-      <span class="dialog-footer">
-        <el-popconfirm
-          trigger="click"
-          placement="left"
-          persistent="false"
-          :title="translations.placeholders.cancelPopupText"
-          @confirm="closeModal(ruleFormRef)"
-        >
-          <template #reference>
-            <el-button>{{translations.modalInputs.cancelBtn}}</el-button>
-          </template>
-        </el-popconfirm>
-        <el-button type="primary" @click="createRow(activityForm, ruleFormRef)">
-          {{translations.modalInputs.submitBtn}}
-        </el-button>
-      </span>
-    </template>
-  </el-dialog>
 </template>
 
 <style scoped>
