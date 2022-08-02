@@ -282,6 +282,9 @@
               <font-awesome-icon icon="pen-to-square" />
             </el-button>
             <el-popconfirm
+              trigger="hover"
+              placement="right"
+              persistent="false"
               :title="translations.placeholders.deletePopupText"
               @confirm="deleteRow(scope.$index)"
             >
@@ -373,6 +376,9 @@
     <template #footer>
       <span class="dialog-footer">
         <el-popconfirm
+          trigger="click"
+          placement="left"
+          persistent="false"
           :title="translations.placeholders.cancelPopupText"
           @confirm="closeModal(ruleFormRef)"
         >
