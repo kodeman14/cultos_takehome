@@ -227,7 +227,7 @@
               <el-col :span="9">
                 <h1 class="absolute top-2">
                   {{translations.totalEarnedText}}
-                  <span :class="gradientStyle">{{totalPoints}}</span>
+                  <span :class="constants.gradientStyle.join(' ')">{{this.isServerDown ? constants.noPointsExist : this.totalPoints}}</span>
                 </h1>
               </el-col>
             </el-row>
@@ -273,7 +273,7 @@
         </el-table-column>
         <el-table-column :label="translations.colHeaders.earnedCol" sortable prop="pointsEarned">
           <template #default="scope">
-            <p :class="gradientStyle">+ {{scope.row.pointsEarned}}</p>
+            <p :class="constants.gradientStyle.join(' ')">+ {{scope.row.pointsEarned}}</p>
           </template>
         </el-table-column>
         <el-table-column :label="translations.colHeaders.actionsCol">
@@ -362,13 +362,14 @@
       <el-form-item :label="translations.modalInputs.pointsLabel" prop="pointsEarned">
         <el-input-number
           type="num"
-          :min="constants.pointsAmtMin"
           :max="constants.pointsAmtMax"
+          :min="constants.pointsAmtStep"
           :step="constants.pointsAmtStep"
           v-model="activityForm.pointsEarned"
         />
       </el-form-item>
     </el-form>
+
     <template #footer>
       <span class="dialog-footer">
         <el-popconfirm
