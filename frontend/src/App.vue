@@ -7,10 +7,12 @@
   import CreateModal from './components/CreateModal.vue'
   import TableDisplay from './components/TableDisplay.vue'
 
+  // declare refs
   const ruleFormRef = ref()
   const currPageRef = ref(1)
   const pageSizeRef = ref(5)
-  const gradientStyle = 'font-extrabold text-transparent bg-clip-text bg-gradient-to-r from-purple-300 to-pink-400'
+  const rowSelectRef = ref()
+  const tableDataRef = ref()
 
   const defaultForm = reactive({
     description: '',
@@ -50,10 +52,10 @@
 <script>
   export default {
     name: 'App',
-    components: {
-      CreateModal,
-      TableDisplay,
-    },
+    // components: {
+    //   CreateModal,
+    //   TableDisplay,
+    // },
     data() {
       return {
         pageNum: 1,
@@ -61,12 +63,14 @@
         tableData: [],
         totalPoints: 0,
         editFlag: false,
+        deleteFlag: false,
         isEmptyFlag: false,
+        isServerDown: true,
         modalVisible: false,
         freshFormFields: {},
         activityForm: this.defaultForm,
         translations: this.translations,
-        freshFormFields: {},
+        // hideColMobile: window.innerWidth < 500,
 }
     },
     beforeMount() {
@@ -196,9 +200,10 @@
         const multSizeNum = this.pageSize * this.pageNum
         return rawTable.slice(multSizeNum - this.pageSize, multSizeNum)
       },
-      checkEmpty() {
+      checkEmpty(dbIssue) {
         const rawTable = this.getRawInfo(this.tableData)
-        this.isEmptyFlag = rawTable.length === 0
+        this.isServerDown = dbIssue
+        if (!dbIssue) this.isEmptyFlag = rawTable.length === 0
 }
     },
   }
@@ -231,18 +236,17 @@
     </template>
 
     <!-- table component -->
-    <div v-if="!this.isEmptyFlag">
+    <div v-if="!this.isEmptyFlag && !this.isServerDown">
       <el-table
+        ref="tableDataRef"
         table-layout="auto"
         class="cultos-table"
         :data="this.pagedData()"
         header-cell-class-name="font-extrabold text-xl text-black"
       >
-  header .wrapper {
-    display: flex;
-    place-items: flex-start;
-    flex-wrap: wrap;
-  }
+        <!-- :row-key="id" -->
+        <!-- v-if="!this.hideColMobile" -->
+        <!-- @current-change="handleRowClick" -->
         <el-table-column :label="translations.colHeaders.dateCol" sortable prop="date">
           <template #default="scope">
             <p>{{scope.row.date.slice(0, 10)}}</p>
@@ -299,12 +303,25 @@
         />
       </div>
     </div>
-    <div v-else><el-empty :description="translations.errors[ this.isEmptyFlag ? 'emptyTable' : 'noDataLoaded']" /></div>
+    <div v-else>
+      <el-empty :description="translations.errors[
+        this.isEmptyFlag
+        ? 'emptyTable'
+        : this.isServerDown
+          ? 'noDataLoaded'
+          : 'otherIssue'
+      ]" />
+    </div>
   </el-card>
 
   <!-- dialog component -->
   <el-dialog v-model="modalVisible" :title="editFlag ? translations.editActivityText : translations.createActivityText">
-    <el-form ref="ruleFormRef" :model="activityForm" :rules="inputRules" label-position="top">
+    <el-form
+      ref="ruleFormRef"
+      :rules="inputRules"
+      label-position="top"
+      :model="activityForm"
+    >
       <el-form-item :label="translations.modalInputs.detailsLabel" prop="description">
         <el-col :span="18">
           <el-input
