@@ -84,9 +84,12 @@
         .then(response => {
           console.log(response.data)
           this.tableData = response.data
+
+          this.checkEmpty(false)
           this.calculatePoints()
         })
         .catch(error => {
+          this.checkEmpty(true)
           console.error('axios fetch error', error)
           ElMessage.error(translations.snackbars.serverIssue)
         })
@@ -169,6 +172,7 @@
         this.tableData.splice(index, 1)
         console.log('deleted', this.tableData)
         this.pagedData()
+        this.checkEmpty(false)
         this.calculatePoints()
         ElMessage({
           message: translations.snackbars.rowDelete,
