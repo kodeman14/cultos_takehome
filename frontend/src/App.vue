@@ -233,9 +233,9 @@
     <!-- table component -->
     <div v-if="!this.isEmptyFlag">
       <el-table
-        :data="this.tableData"
         table-layout="auto"
         class="cultos-table"
+        :data="this.pagedData()"
         header-cell-class-name="font-extrabold text-xl text-black"
       >
   header .wrapper {
