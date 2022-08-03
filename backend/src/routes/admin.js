@@ -13,10 +13,10 @@ export function seedDB(type) {
 	logger.info(`[seedDB] putting data in DB for '${type}'`);
 
 	let seedData = {
-        merchantConfig,
+		merchantConfig,
 		test,
-        test_with_onboard,
-        test_with_onboard_but_no_campaigns_or_rewards,
+		test_with_onboard,
+		test_with_onboard_but_no_campaigns_or_rewards,
 	};
 
 	if (!_.has(seedData, type)) {
@@ -40,33 +40,31 @@ export function seedDBHandler(req, res) {
 }
 
 export function setupRoutes(app, getServers) {
-    app.get('/admin/ping', (req, res) => {
-        res.status(200).send("ding!");
-    });
+	app.get('/admin/ping', (req, res) => {
+		res.status(200).send("ding!");
+	});
 
-    // todo-graham: should be a post
+	// todo-graham: should be a post
 	app.get("/admin/die", (req, res) => {
 		logger.info(`[/admin/die] received die command`);
-        let closedCounter = 0;
+		let closedCounter = 0;
 
-        _.forEach(getServers(), (server) => {
-            // print the port of the closing server
-            logger.info(`[/admin/die] closing this server: %s`, server._connectionKey);
-            server.close(() => {
-                closedCounter++;
-                if (closedCounter == 1) {
-                    // we send the response after we close the first server because we don't know if any
-                    // other callback will run. I don't understand why this is. I am confused.
-                    //
-                    // sometimes, all callbacks run, and sometimes, they don't.
-                    res.status(200).send("dying!");
-                }
-            });
-        });
+		_.forEach(getServers(), (server) => {
+			// print the port of the closing server
+			logger.info(`[/admin/die] closing this server: %s`, server._connectionKey);
+			server.close(() => {
+				closedCounter++;
+				if (closedCounter == 1) {
+					// we send the response after we close the first server because we don't know if any
+					// other callback will run. I don't understand why this is. I am confused.
+					// sometimes, all callbacks run, and sometimes, they don't.
+					res.status(200).send("dying!");
+				}
+			});
+		});
 	});
 
 	// :type should be the filename in /seed_data
-	//
 	// do not include the extension (.js)
 	app.post("/admin/seed_data/:type", seedDBHandler);
 }

@@ -22,10 +22,10 @@ export function updateModelInInternalDB(modelName, id, model) {
 
 	model.updatedAt = Date.now();
 	model.updatedAtFormatted = `${new Date(model.updatedAt)}`;
-    // just in-case the ID isn't in the model
-    model.id = id;
+	// just in-case the ID isn't in the model
+	model.id = id;
 
-    var clonedModel = _.clone(model);
+	var clonedModel = _.clone(model);
 	internalDB[modelName][id] = clonedModel;
 
 	persister.writeDBToFile(internalDB);
@@ -112,8 +112,8 @@ export function getModelFromInternalDB(modelName, searchParams) {
 }
 
 export function modelExistsInInternalDB(modelName, searchParams) {
-    var allMatches = listModelsFromInternalDB(modelName, searchParams);
-    return allMatches.length > 0;
+	var allMatches = listModelsFromInternalDB(modelName, searchParams);
+	return allMatches.length > 0;
 }
 
 // will return an empty object if it cannot find anything in the DB
@@ -150,5 +150,5 @@ export function clearDB() {
 
 export async function loadDBFromFile() {
 	internalDB = await persister.loadDBFromFile();
-    return internalDB;
+	return internalDB;
 }

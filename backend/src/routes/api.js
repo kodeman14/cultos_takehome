@@ -159,10 +159,10 @@ export function setupRoutes(app) {
 		let searchParams = req.body.searchParams;
 
 		try {
-            var updatedModel = await runHooks("upsert", modelName, newModel, getStandardHookExtrasFromRequest(req));
+			var updatedModel = await runHooks("upsert", modelName, newModel, getStandardHookExtrasFromRequest(req));
 			upsertModelInInternalDB(modelName, updatedModel, searchParams);
-            updatedModel = await runHooks("upsertPost", modelName, newModel, getStandardHookExtrasFromRequest(req));
-            res.send(updatedModel);
+			updatedModel = await runHooks("upsertPost", modelName, newModel, getStandardHookExtrasFromRequest(req));
+			res.send(updatedModel);
 		} catch (error) {
 			logger.error(`[/api/${modelName}/upsert] found error: %s`, error);
 			res.status(500).send({
