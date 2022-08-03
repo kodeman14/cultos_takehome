@@ -233,76 +233,15 @@
       </div>
     </template>
 
-    <!-- table component -->
     <div v-if="!this.isEmptyFlag && !this.isServerDown">
-      <el-table
-        ref="tableDataRef"
-        table-layout="auto"
-        class="cultos-table"
-        :data="this.pagedData()"
-        header-cell-class-name="font-extrabold text-xl text-black"
-      >
-        <!-- :row-key="id" -->
-        <!-- v-if="!this.hideColMobile" -->
-        <!-- @current-change="handleRowClick" -->
-        <el-table-column :label="translations.colHeaders.dateCol" sortable prop="date">
-          <template #default="scope">
-            <p>{{scope.row.date.slice(0, 10)}}</p>
-          </template>
-        </el-table-column>
-        <el-table-column :label="translations.colHeaders.detailsCol">
-          <template #default="scope">
-            <p>{{translations.placeholders.thanksForText}} {{scope.row.description}}</p>
-          </template>
-        </el-table-column>
-        <el-table-column :label="translations.colHeaders.activityCol">
-          <template #default="scope">
-          <el-row>
-            <el-space>
-              <font-awesome-icon :icon="['fab', this.convertToIcon(scope.row.socialPlatform)]" />
-              <p>{{scope.row.socialType}}</p>
-            </el-space>
-          </el-row>
-          </template>
-        </el-table-column>
-        <el-table-column :label="translations.colHeaders.earnedCol" sortable prop="pointsEarned">
-          <template #default="scope">
-            <p :class="constants.gradientStyle.join(' ')">+ {{scope.row.pointsEarned}}</p>
-          </template>
-        </el-table-column>
-        <el-table-column :label="translations.colHeaders.actionsCol">
-          <template #default="scope">
-            <el-button @click="editRow(scope.row)">
-              <font-awesome-icon icon="pen-to-square" />
-            </el-button>
-            <el-popconfirm
-              trigger="hover"
-              placement="right"
-              persistent="false"
-              :title="translations.placeholders.deletePopupText"
-              @confirm="deleteRow(scope.$index)"
-            >
-              <template #reference>
-                <el-button>
-                  <font-awesome-icon icon="trash-can" />
-                </el-button>
-              </template>
-            </el-popconfirm>
-          </template>
-        </el-table-column>
-      </el-table>
-      <div class="flex justify-center mt-10">
-        <el-pagination
-          background
-          :page-sizes="[5, 10]"
-          :total="this.tableData.length"
-          v-model:page-size="pageSizeRef"
-          @size-change="handleSizeChange"
-          v-model:currentPage="currPageRef"
-          @current-change="handlePageChange"
-          layout="total, sizes, prev, pager, next"
+      <TableDisplay
+        @edit-row="editRow"
+        @delete-row="deleteRow"
+        :paged-data="this.pagedData"
+        @sizing-change="handleSizeChange"
+        @paging-change="handlePageChange"
+        :list-length="this.tableData.length"
         />
-      </div>
     </div>
     <div v-else>
       <el-empty :description="translations.errors[
