@@ -1,4 +1,6 @@
 export const constants = {
+  pageNum: 1,
+  pageSize: 5,
   descMinLength: 5,
   descMaxLength: 50,
   pointsAmtStep: 10,
