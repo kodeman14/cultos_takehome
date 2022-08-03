@@ -4,6 +4,8 @@
 
   import { constants } from './assets/constants'
   import { translations } from './assets/translations'
+
+  import CardHeader from './components/CardHeader.vue'
   import CreateModal from './components/CreateModal.vue'
   import TableDisplay from './components/TableDisplay.vue'
 
@@ -46,6 +48,7 @@
   export default {
     name: 'App',
     components: {
+      CardHeader,
       CreateModal,
       TableDisplay,
     },
@@ -209,28 +212,12 @@
 <template>
   <el-card class="box-card">
     <!-- main header -->
-    <template #header>
-      <div class="card-header">
-        <el-row>
-          <el-col :span="18">
-            <el-row>
-              <el-col :span="9">
-                <h1 class="font-extrabold text-4xl">{{translations.yourActivityText}}</h1>
-              </el-col>
-              <el-col :span="9">
-                <h1 class="absolute top-2">
-                  {{translations.totalEarnedText}}
-                  <span :class="constants.gradientStyle.join(' ')">{{this.isServerDown ? constants.noPointsExist : this.totalPoints}}</span>
-                </h1>
-              </el-col>
-            </el-row>
-          </el-col>
-          <el-col :span="6">
-            <el-button class="absolute button right-0" type="primary" @click="openModal(false, {})">{{translations.createActivityText}}</el-button>
-          </el-col>
-        </el-row>
-      </div>
-    </template>
+    <CardHeader
+      :is-server-down="this.isServerDown"
+      :total-points="this.totalPoints"
+      @open-modal="openModal"
+    />
+    <el-divider />
 
     <!-- conditional table display -->
     <div v-if="!this.isEmptyFlag && !this.isServerDown">
