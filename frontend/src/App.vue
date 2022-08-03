@@ -1,17 +1,11 @@
 <script setup>
   import { ElMessage, ElTable } from 'element-plus'
-  import { reactive, ref, isProxy, toRaw } from 'vue'
+  import { reactive, isProxy, toRaw } from 'vue'
 
   import { constants } from './assets/constants'
   import { translations } from './assets/translations'
   import CreateModal from './components/CreateModal.vue'
   import TableDisplay from './components/TableDisplay.vue'
-
-  // declare refs
-  const currPageRef = ref(1)
-  const pageSizeRef = ref(5)
-  const rowSelectRef = ref()
-  const tableDataRef = ref()
 
   const defaultForm = reactive({
     description: '',
@@ -53,23 +47,22 @@
     name: 'App',
     components: {
       CreateModal,
-      // TableDisplay,
+      TableDisplay,
     },
     data() {
       return {
         pageNum: 1,
         pageSize: 5,
         tableData: [],
+        pagedData: [],
         totalPoints: 0,
         editFlag: false,
-        deleteFlag: false,
-        isEmptyFlag: false,
         isServerDown: true,
+        isEmptyFlag: false,
         modalVisible: false,
         freshFormFields: {},
         activityForm: this.defaultForm,
         translations: this.translations,
-        // hideColMobile: window.innerWidth < 500,
 }
     },
     beforeMount() {
@@ -84,6 +77,7 @@
           console.log(response.data)
           this.tableData = response.data
 
+          this.setPagedData()
           this.checkEmpty(false)
           this.calculatePoints()
         })
@@ -94,7 +88,6 @@
         })
       },
       calculatePoints() {
-        this.checkEmpty()
         this.totalPoints = 0 //always resets to 0
         this.tableData && this.tableData.forEach(row => this.totalPoints += row.pointsEarned)
       },
@@ -122,7 +115,7 @@
                 .then(response => {
                   this.modalVisible = false
                   this.tableData.push(response.data)
-                  this.pagedData()
+                  this.setPagedData()
                   this.calculatePoints()
 
                   ElMessage({
@@ -171,7 +164,8 @@
       deleteRow(index) {
         this.tableData.splice(index, 1)
         console.log('deleted', this.tableData)
-        this.pagedData()
+
+        this.setPagedData()
         this.checkEmpty(false)
         this.calculatePoints()
         ElMessage({
@@ -193,16 +187,16 @@
       },
       handleSizeChange(value) {
         this.pageSize = value
-        this.pagedData()
+        this.setPagedData()
       },
       handlePageChange(value) {
         this.pageNum = value
-        this.pagedData()
+        this.setPagedData()
       },
-      pagedData() {
+      setPagedData() {
         const rawTable = this.getRawInfo(this.tableData)
         const multSizeNum = this.pageSize * this.pageNum
-        return rawTable.slice(multSizeNum - this.pageSize, multSizeNum)
+        this.pagedData = rawTable.slice(multSizeNum - this.pageSize, multSizeNum)
       },
       checkEmpty(dbIssue) {
         const rawTable = this.getRawInfo(this.tableData)
@@ -321,7 +315,6 @@
     </div>
   </el-card>
 
-  <!-- dialog component -->
   <CreateModal
     @create-row="createRow"
     @close-modal="closeModal"
@@ -330,14 +323,3 @@
     :activity-form="this.activityForm"
         />
 </template>
-
-<style scoped>
-  .box-card {
-    width: 75%;
-  }
-
-  .cultos-table {
-    width: auto;
-    overflow: visible;
-}
-</style>
