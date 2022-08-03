@@ -3,6 +3,31 @@ import {image as icon} from "./big_data/icon.js";
 import merchantConfig from "./merchantConfig.js";
 import widgetConfig from "./widgetConfig.js";
 
+const activityList = []
+
+const platform = ['Twitter', 'Facebook', 'Instagram']
+const activity = ['Liked', 'Shared', 'Posted']
+
+const randomDate = (start, end) => {
+    return new Date(
+        start.getTime() + Math.random() * (end.getTime() - start.getTime())
+    );
+};
+
+for (let i = 0; i < 50; i++) {
+    const randomVal = (num) => {
+        return Math.floor(Math.random() * num)
+    }
+    activityList.push({
+        id: i,
+        pointsEarned: randomVal(1000),
+        description: `test activity ${i}`,
+        socialType: activity[randomVal(3)],
+        socialPlatform: platform[randomVal(3)],
+        date: randomDate(new Date(2000, 0, 1), new Date()),
+    })
+}
+
 export default {
     ...merchantConfig,
     ...widgetConfig,
@@ -1168,19 +1193,5 @@ export default {
             isReceived: false,  // -1000 here the user is spending 100 tokens to redeem a reward
         }
     ],
-    MyActivity: [{
-        id: 1,
-        description: "Sharing Post",
-        socialPlatform: "Instagram",
-        socialType: "Liked",
-        pointsEarned: 150,
-        date: "2022-03-01T05:00:00.000Z",
-    }, {
-        id: 2,
-        description: "Sharing Liked",
-        socialPlatform: "Facebook",
-        socialType: "Shared",
-        pointsEarned: 300,
-        date: "2022-04-01T05:00:00.000Z",
-    }],
+    MyActivity: activityList,
 };

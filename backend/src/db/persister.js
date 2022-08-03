@@ -99,20 +99,20 @@ export async function saveDataAndDeleteOld(obj, persistConfig) {
 }
 
 export function deleteLatestFile() {
-    var latestFile = getMostRecentFileNameSafely(persister.saveDir);
-    if (latestFile != null) {
-        unlinkSync(latestFile);
-    }
+	var latestFile = getMostRecentFileNameSafely(persister.saveDir);
+	if (latestFile != null) {
+		unlinkSync(latestFile);
+	}
 }
 
 function getMostRecentFileNameSafely(dir) {
-    const files = readdirSync(dir);
-    if (files.length === 0) {
-        return null;
-    }
+	const files = readdirSync(dir);
+	if (files.length === 0) {
+		return null;
+	}
 
-    const latestFile = _.max(files);
-    return path.join(dir, latestFile);
+	const latestFile = _.max(files);
+	return path.join(dir, latestFile);
 }
 
 // Return only base file name without dir. Most recent is by creation date.
@@ -144,16 +144,16 @@ async function recoverOrSetupDB() {
 }
 
 export async function loadDBFromFile() {
-    const latestFilename = await recoverOrSetupDB();
+	const latestFilename = await recoverOrSetupDB();
 
 	// if the dir is empty its probably the first time starting up -- therefore our DB should be empty
 	if (latestFilename === "") {
-        logger.info("[persister] no DB to load");
+		logger.info("[persister] no DB to load");
 		return {};
 	}
-    logger.info("[persister] LOADING DB FROM FILE: recovered from %s", latestFilename);
+	logger.info("[persister] LOADING DB FROM FILE: recovered from %s", latestFilename);
 	const persistedFile = readFileSync(latestFilename);
-    logger.info(`[persister] loading data like this: ${persistedFile.toString().substring(0, 500)}`);
+	logger.info(`[persister] loading data like this: ${persistedFile.toString().substring(0, 500)}`);
 
 	return JSON.parse(persistedFile);
 }

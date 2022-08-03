@@ -10,8 +10,10 @@ import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome'
 import { faPenToSquare, faTrashCan } from '@fortawesome/free-solid-svg-icons'
 import { faTwitter, faFacebook, faInstagram } from '@fortawesome/free-brands-svg-icons'
 
+import CardHeader from './components/CardHeader.vue'
 import CreateModal from './components/CreateModal.vue'
 import TableDisplay from './components/TableDisplay.vue'
+
 import App from './App.vue'
 import './assets/main.css'
 import 'element-plus/dist/index.css'
@@ -25,6 +27,7 @@ library.add(faPenToSquare);
 const app = createApp(App)
 
 app.component("font-awesome-icon", FontAwesomeIcon)
+  .component('CardHeader', CardHeader)
   .component('CreateModal', CreateModal)
   .component('TableDisplay', TableDisplay)
 app.use(VueAxios, axios)

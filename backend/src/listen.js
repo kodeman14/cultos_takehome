@@ -7,16 +7,16 @@ export async function killExistingSuperman() {
 
     var port = 1938;
     try {
-        await axios({
-            method: "get",
-            url: `http://localhost:${port}/admin/die`,
-            timeout: 1000,
-        });
-        logger.info('[killExistingSuperman] had to kill existing server');
+			await axios({
+				method: "get",
+				url: `http://localhost:${port}/admin/die`,
+				timeout: 1000,
+			});
+			logger.info('[killExistingSuperman] had to kill existing server');
     } catch (error) {
-        // if axios fucks up, we don't care. that probably means that a server isn't running; that's
-        // good.
-        logger.info("[killExistingSuperman] tried to kill existing server; got this error: %s", error.toString());
+			// if axios fucks up, we don't care. that probably means that a server isn't running; that's
+			// good.
+			logger.info("[killExistingSuperman] tried to kill existing server; got this error: %s", error.toString());
     }
 }
 

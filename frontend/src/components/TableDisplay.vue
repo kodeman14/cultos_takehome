@@ -31,7 +31,7 @@
       handlePaging(value) {
         this.$emit('pagingChange', value)
       },
-    }
+    },
   }
 </script>
 
@@ -73,7 +73,7 @@
           <font-awesome-icon icon="pen-to-square" />
         </el-button>
         <el-popconfirm
-          trigger="hover"
+          trigger="click"
           placement="right"
           persistent="false"
           :title="translations.placeholders.deletePopupText"

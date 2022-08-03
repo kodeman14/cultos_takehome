@@ -13,7 +13,7 @@ function delay(time) {
 }
 
 test("persister saves what was passed in", async () => {
-    createPersister(TEST_SAVE_DIR);
+	createPersister(TEST_SAVE_DIR);
 
 	const obj = {
 		wasSavedByPersistObject: true,
