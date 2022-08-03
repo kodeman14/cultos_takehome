@@ -25,6 +25,12 @@
             return 'font-awesome'
         }
       },
+      handleSizing(value) {
+        this.$emit('sizingChange', value)
+      },
+      handlePaging(value) {
+        this.$emit('pagingChange', value)
+      },
     }
   }
 </script>
@@ -88,9 +94,9 @@
       :total="listLength"
       :page-sizes="[5, 10]"
       v-model:page-size="pageSizeRef"
-      @size-change="this.$emit('sizingChange', value)"
+      @size-change="this.handleSizing"
       v-model:currentPage="currPageRef"
-      @current-change="this.$emit('pagingChange', value)"
+      @current-change="this.handlePaging"
       layout="total, sizes, prev, pager, next"
     />
   </div>
