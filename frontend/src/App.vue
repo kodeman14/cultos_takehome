@@ -8,22 +8,22 @@
   import TableDisplay from './components/TableDisplay.vue'
 
   const defaultForm = reactive({
-    description: '',
-    socialPlatform: '',
     socialType: '',
+    description: '',
     pointsEarned: 10,
+    socialPlatform: '',
   })
 
   const inputRules = reactive({
     description: [{
       required: true,
-      message: translations.errors.descReq, trigger:
-      'blur'
+      trigger: 'blur',
+      message: translations.errors.descReq,
     }, {
+      trigger: 'blur',
       min: constants.descMinLength,
       max: constants.descMaxLength,
       message: translations.errors.descLength,
-      trigger: 'blur'
     }],
     points: [
       { required: true, message: translations.errors.pointsReq, trigger: 'change' },
@@ -31,13 +31,13 @@
     ],
     socialPlatform: [{
       required: true,
-      message: translations.errors.platformReq,
       trigger: 'change',
+      message: translations.errors.platformReq,
     }],
     socialType: [{
       required: true,
-      message: translations.errors.activityReq,
       trigger: 'change',
+      message: translations.errors.activityReq,
     }],
   })
 </script>
@@ -63,7 +63,7 @@
         freshFormFields: {},
         activityForm: this.defaultForm,
         translations: this.translations,
-}
+      }
     },
     beforeMount() {
       this.getList()
@@ -96,7 +96,6 @@
       },
       setFormScratch() {
         this.editFlag = false
-        // this.ruleFormRef.resetFields()
         console.log('default', this.freshFormFields)
         this.activityForm = { ... this.freshFormFields }
       },
@@ -105,7 +104,7 @@
         const payload = {
           ...formInfo,
           date: new Date()
-}
+        }
 
         if(!this.editFlag) {
           if (!formRef) return
@@ -130,7 +129,7 @@
             } else {
               console.error('data valid error', fields)
               ElMessage.error(translations.snackbars.missingFields)
-}
+            }
           })
         } else { // in edit mode
           this.editFlag = false
@@ -141,7 +140,7 @@
             message: translations.snackbars.rowEdit,
             type: 'success',
           })
-}
+        }
       },
       openModal(isEditMode, rowData) {
         this.modalVisible = true
@@ -202,7 +201,7 @@
         const rawTable = this.getRawInfo(this.tableData)
         this.isServerDown = dbIssue
         if (!dbIssue) this.isEmptyFlag = rawTable.length === 0
-}
+      },
     },
   }
 </script>
@@ -233,6 +232,7 @@
       </div>
     </template>
 
+    <!-- conditional table display -->
     <div v-if="!this.isEmptyFlag && !this.isServerDown">
       <TableDisplay
         @edit-row="editRow"
@@ -241,7 +241,7 @@
         @sizing-change="handleSizeChange"
         @paging-change="handlePageChange"
         :list-length="this.tableData.length"
-        />
+      />
     </div>
     <div v-else>
       <el-empty :description="translations.errors[
@@ -254,11 +254,12 @@
     </div>
   </el-card>
 
+  <!-- create activity modal -->
   <CreateModal
     @create-row="createRow"
     @close-modal="closeModal"
     :edit-flag="this.editFlag"
     :is-visible="this.modalVisible"
     :activity-form="this.activityForm"
-        />
+  />
 </template>
