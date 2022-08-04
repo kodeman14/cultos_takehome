@@ -11,24 +11,21 @@
 </script>
 
 <template #header>
-    <div class="card-header">
-      <el-row>
-        <el-col :span="18">
-          <el-row>
-            <el-col :span="9">
-              <h1 class="font-extrabold text-4xl">{{translations.yourActivityText}}</h1>
-            </el-col>
-            <el-col :span="9">
-              <h1 class="absolute top-2">
-                {{translations.totalEarnedText}}
-                <span :class="constants.gradientStyle.join(' ')">{{this.isServerDown ? constants.noPointsExist : this.totalPoints}}</span>
-              </h1>
-            </el-col>
-          </el-row>
-        </el-col>
-        <el-col :span="6">
-          <el-button class="absolute button right-0" type="primary" @click="this.$emit('openModal', false, {})">{{translations.createActivityText}}</el-button>
-        </el-col>
-      </el-row>
-    </div>
+  <div class="grid text-center items-center lg:grid-cols-4 gap-y-2">
+    <h1 class="font-extrabold text-2xl lg:text-4xl">{{translations.yourActivityText}}</h1>
+    <h1>
+      {{translations.totalEarnedText}}
+      <span :class="constants.gradientStyle.join(' ')">
+        {{this.isServerDown ? constants.noPointsExist : this.totalPoints}}
+      </span>
+    </h1>
+    <div></div>
+    <el-button
+      type="primary"
+      class="button lg:float-right flex lg:block w-1/2 mx-auto lg:mx-0"
+      @click="this.$emit('openModal', false)"
+    >
+      {{translations.createActivityText}}
+    </el-button>
+  </div>
 </template>

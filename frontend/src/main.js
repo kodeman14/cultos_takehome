@@ -7,8 +7,9 @@ import ElementPlus from 'element-plus'
 
 import { library } from '@fortawesome/fontawesome-svg-core'
 import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome'
-import { faPenToSquare, faTrashCan } from '@fortawesome/free-solid-svg-icons'
-import { faTwitter, faFacebook, faInstagram } from '@fortawesome/free-brands-svg-icons'
+import { faPenToSquare, faTrashCan, faBan } from '@fortawesome/free-solid-svg-icons'
+import { faNoteSticky, faThumbsUp, faShareSquare } from '@fortawesome/free-regular-svg-icons'
+import { faTwitter, faFacebook, faInstagram, faFortAwesome } from '@fortawesome/free-brands-svg-icons'
 
 import CardHeader from './components/CardHeader.vue'
 import CreateModal from './components/CreateModal.vue'
@@ -18,11 +19,16 @@ import App from './App.vue'
 import './assets/main.css'
 import 'element-plus/dist/index.css'
 
+library.add(faBan);
 library.add(faTwitter);
-library.add(faFacebook);
 library.add(faTrashCan);
+library.add(faThumbsUp);
+library.add(faFacebook);
 library.add(faInstagram);
+library.add(faNoteSticky);
+library.add(faShareSquare);
 library.add(faPenToSquare);
+library.add(faFortAwesome);
 
 const app = createApp(App)
 

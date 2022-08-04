@@ -6,14 +6,27 @@
   
   const currPageRef = ref(constants.pageNum)
   const pageSizeRef = ref(constants.pageSize)
+  const mobilePageLayout = "prev, pager, next"
+  const desktopPageLayout = "total, sizes, prev, pager, next"
 </script>
 
 <script>
   export default {
     props: ['pagedData', 'listLength', 'pageNum', 'pageSize'],
     emits: ['editRow', 'deleteRow', 'sizingChange', 'pagingChange'],
+    data() {
+      return {
+        mobileWidth: window.innerWidth < constants.mobileWidth
+      }
+    },
+    created() {
+      window.addEventListener("resize", this.onResize);
+    },
+    destroyed() {
+      window.removeEventListener("resize", this.onResize);
+    },
     methods: {
-      iconConvert(platform) {
+      iconPlatformConvert(platform) {
         switch(platform) {
           case this.translations.socialPlatform.twitter:
             return 'twitter'
@@ -22,7 +35,19 @@
           case this.translations.socialPlatform.instagram:
             return 'instagram'
           default: //fail safe
-            return 'font-awesome'
+            return 'fort-awesome'
+        }
+      },
+      iconActivityConvert(activity) {
+        switch(activity) {
+          case this.translations.socialType.liked:
+            return 'thumbs-up'
+          case this.translations.socialType.shared:
+            return 'share-square'
+          case this.translations.socialType.posted:
+            return 'note-sticky'
+          default: //fail safe
+            return 'ban'
         }
       },
       handleSizing(value) {
@@ -31,63 +56,113 @@
       handlePaging(value) {
         this.$emit('pagingChange', value)
       },
+      onResize(e) {
+        console.log('width', window.innerWidth)
+        this.mobileWidth = window.innerWidth < constants.mobileWidth
+      }
     },
   }
 </script>
 
 <template>
   <el-table
-    table-layout="auto"
-    class="cultos-table"
     :data="this.pagedData"
-    header-cell-class-name="font-extrabold text-xl text-black"
+    :table-layout="this.mobileWidth ? 'fixed': 'auto'"
+    header-cell-class-name="lg:font-extrabold lg:text-xl text-black"
   >
-    <el-table-column :label="translations.colHeaders.dateCol" sortable prop="date">
+    <!-- date -->
+    <el-table-column
+      prop="date"
+      align="center"
+      header-align="center"
+      v-if="!this.mobileWidth"
+      :sortable="!this.mobileWidth"
+      :label="translations.colHeaders.dateCol"
+    >
       <template #default="scope">
         <p>{{scope.row.date.slice(0, 10)}}</p>
       </template>
     </el-table-column>
-    <el-table-column :label="translations.colHeaders.detailsCol">
+    
+    <!-- details -->
+    <el-table-column 
+      align="center"
+      header-align="center"
+      :label="translations.colHeaders.detailsCol"
+    >
       <template #default="scope">
-        <p>{{translations.placeholders.thanksForText}} {{scope.row.description}}</p>
+        <p>
+          <span v-if="!this.mobileWidth">{{translations.placeholders.thanksForText}}</span>
+          {{scope.row.description}}
+        </p>
       </template>
     </el-table-column>
-    <el-table-column :label="translations.colHeaders.activityCol">
+
+    <!-- platform -->
+    <el-table-column
+      align="center"
+      header-align="center"
+      :label="translations.colHeaders.activityCol"
+    >
       <template #default="scope">
-      <el-row>
-        <el-space>
-          <font-awesome-icon :icon="['fab', this.iconConvert(scope.row.socialPlatform)]" />
-          <p>{{scope.row.socialType}}</p>
-        </el-space>
-      </el-row>
+        <div class="flex justify-center">
+          <el-space>
+            <font-awesome-icon :icon="['fab', this.iconPlatformConvert(scope.row.socialPlatform)]" />
+            <div v-if="this.mobileWidth">
+              <font-awesome-icon :icon="['far', this.iconActivityConvert(scope.row.socialType)]" />
+            </div>
+            <div v-else>
+              <p>{{scope.row.socialType}}</p>
+            </div>
+          </el-space>
+        </div>
       </template>
     </el-table-column>
-    <el-table-column :label="translations.colHeaders.earnedCol" sortable prop="pointsEarned">
+
+    <!-- points -->
+    <el-table-column
+      align="center"
+      prop="pointsEarned"
+      header-align="center"
+      :sortable="!this.mobileWidth"
+      :label="translations.colHeaders.earnedCol"
+    >
       <template #default="scope">
-        <p :class="constants.gradientStyle.join(' ')">+ {{scope.row.pointsEarned}}</p>
+        <p :class="constants.gradientStyle.join(' ')">
+          + {{scope.row.pointsEarned}}
+        </p>
       </template>
     </el-table-column>
-    <el-table-column :label="translations.colHeaders.actionsCol">
+
+    <!-- actions -->
+    <el-table-column
+      align="center"
+      header-align="center"
+      :label="translations.colHeaders.actionsCol"
+    >
       <template #default="scope">
-        <el-button @click="this.$emit('editRow', scope.row)">
-          <font-awesome-icon icon="pen-to-square" />
-        </el-button>
-        <el-popconfirm
-          trigger="click"
-          placement="right"
-          persistent="false"
-          :title="translations.placeholders.deletePopupText"
-          @confirm="this.$emit('deleteRow', scope.$index)"
-        >
-          <template #reference>
-            <el-button>
+        <el-space :fill="fill" wrap>
+          <font-awesome-icon
+            icon="pen-to-square"
+            @click="this.$emit('editRow', scope.row)"
+          />
+          <el-popconfirm
+            trigger="click"
+            placement="right"
+            persistent="false"
+            @confirm="this.$emit('deleteRow', scope.$index)"
+            :title="translations.placeholders.deletePopupText"
+          >
+            <template #reference>
               <font-awesome-icon icon="trash-can" />
-            </el-button>
-          </template>
-        </el-popconfirm>
+            </template>
+          </el-popconfirm>
+        </el-space>
       </template>
     </el-table-column>
   </el-table>
+
+  <!-- pagination -->
   <div class="flex justify-center mt-10">
     <el-pagination
       background
@@ -97,7 +172,14 @@
       @size-change="this.handleSizing"
       v-model:currentPage="currPageRef"
       @current-change="this.handlePaging"
-      layout="total, sizes, prev, pager, next"
+      :pager-count="constants.pagerCount"
+      :layout="this.mobileWidth ? mobilePageLayout : desktopPageLayout"
     />
   </div>
 </template>
+
+<style>
+  .el-table th .cell {
+    white-space: nowrap !important;
+  }
+</style>

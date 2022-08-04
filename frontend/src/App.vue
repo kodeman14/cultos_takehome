@@ -210,7 +210,7 @@
 </script>
 
 <template>
-  <el-card class="box-card">
+  <el-card class="w-full lg:w-3/4">
     <!-- main header -->
     <CardHeader
       :is-server-down="this.isServerDown"
