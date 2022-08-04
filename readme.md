@@ -9,6 +9,8 @@
 - [x] Axios / Vue Axios
 - [ ] Moment / Lodash
 
+[Link to Trello Board for project management](https://trello.com/b/dtFLkneN)
+[Link to images hosted on Google Drive]()
 
 ---
 
