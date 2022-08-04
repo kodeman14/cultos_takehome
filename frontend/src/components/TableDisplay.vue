@@ -96,29 +96,45 @@
       </el-row>
       </template>
     </el-table-column>
-    <el-table-column :label="translations.colHeaders.earnedCol" sortable prop="pointsEarned">
+    <!-- points -->
+    <el-table-column
+      align="center"
+      prop="pointsEarned"
+      header-align="center"
+      :sortable="!this.mobileWidth"
+      :label="translations.colHeaders.earnedCol"
+    >
       <template #default="scope">
-        <p :class="constants.gradientStyle.join(' ')">+ {{scope.row.pointsEarned}}</p>
+        <p :class="constants.gradientStyle.join(' ')">
+          + {{scope.row.pointsEarned}}
+        </p>
       </template>
     </el-table-column>
-    <el-table-column :label="translations.colHeaders.actionsCol">
+
+    <!-- actions -->
+    <el-table-column
+      align="center"
+      header-align="center"
+      :label="translations.colHeaders.actionsCol"
+    >
       <template #default="scope">
-        <el-button @click="this.$emit('editRow', scope.row)">
-          <font-awesome-icon icon="pen-to-square" />
-        </el-button>
-        <el-popconfirm
-          trigger="click"
-          placement="right"
-          persistent="false"
-          :title="translations.placeholders.deletePopupText"
-          @confirm="this.$emit('deleteRow', scope.$index)"
-        >
-          <template #reference>
-            <el-button>
+        <el-space :fill="fill" wrap>
+          <font-awesome-icon
+            icon="pen-to-square"
+            @click="this.$emit('editRow', scope.row)"
+          />
+          <el-popconfirm
+            trigger="click"
+            placement="right"
+            persistent="false"
+            @confirm="this.$emit('deleteRow', scope.$index)"
+            :title="translations.placeholders.deletePopupText"
+          >
+            <template #reference>
               <font-awesome-icon icon="trash-can" />
-            </el-button>
-          </template>
-        </el-popconfirm>
+            </template>
+          </el-popconfirm>
+        </el-space>
       </template>
     </el-table-column>
   </el-table>
