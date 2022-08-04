@@ -54,10 +54,9 @@
 
 <template>
   <el-table
-    table-layout="auto"
-    class="cultos-table"
     :data="this.pagedData"
-    header-cell-class-name="font-extrabold text-xl text-black"
+    :table-layout="this.mobileWidth ? 'fixed': 'auto'"
+    header-cell-class-name="lg:font-extrabold lg:text-xl text-black"
   >
     <!-- date -->
     <el-table-column
@@ -96,6 +95,7 @@
       </el-row>
       </template>
     </el-table-column>
+
     <!-- points -->
     <el-table-column
       align="center"
@@ -154,3 +154,9 @@
     />
   </div>
 </template>
+
+<style>
+  .el-table th .cell {
+    white-space: nowrap !important;
+  }
+</style>
