@@ -57,7 +57,15 @@
     :data="this.pagedData"
     header-cell-class-name="font-extrabold text-xl text-black"
   >
-    <el-table-column :label="translations.colHeaders.dateCol" sortable prop="date">
+    <!-- date -->
+    <el-table-column
+      prop="date"
+      align="center"
+      header-align="center"
+      v-if="!this.mobileWidth"
+      :sortable="!this.mobileWidth"
+      :label="translations.colHeaders.dateCol"
+    >
       <template #default="scope">
         <p>{{scope.row.date.slice(0, 10)}}</p>
       </template>
