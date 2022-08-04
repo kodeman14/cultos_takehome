@@ -34,6 +34,12 @@
 - [x] refresh page to see new created row
 
 ### Task 4 (ACTIONS)
+- [x] edit should populate data to edit row
+- [x] confirm edit should update data locally
+- [x] refresh page to see default state of data
+- [x] delete should remove the row locally
+- [x] refresh page to see deleted row again
+- [x] calculate points on edit/delete actions
 
 ### Bonus Tasks
 
