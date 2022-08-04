@@ -15,6 +15,13 @@
 ## Assignment
 
 ### Task 1 + 2 (DESIGN)
+- [x] create activity page
+- [x] closely mimic screenshots
+- [x] query list using post
+- [x] display platform icons
+- [x] add prefix description
+- [x] add up totals for points
+- [x] style the modal and table
 
 ### Task 3 (MODAL)
 
