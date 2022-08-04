@@ -5,6 +5,7 @@
 
 <script>
   export default {
+    name: 'CardHeader',
     props: ['isServerDown', 'totalPoints'],
     emits: ['openModal']
   }

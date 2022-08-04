@@ -55,5 +55,16 @@ export const translations = {
     liked: 'Liked',
     shared: 'Shared',
     posted: 'Posted',
-  }
+  },
+  loginForm: {
+    resetBtn: 'Reset',
+    username: 'Username',
+    password: 'Password',
+    signinBtn: 'Sign In',
+  },
+  notFound: {
+    goBackBtn: 'Go Back',
+    errorTitle: 'Error 404',
+    errorBody: 'Sorry, page not found',
+  },
 }

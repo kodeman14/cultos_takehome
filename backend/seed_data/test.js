@@ -15,7 +15,7 @@ const randomDate = (start, end) => {
     );
 };
 
-for (let i = 1; i <= 50; i++) {
+for (let i = 1; i <= 100; i++) {
     const randomVal = (num) => Math.floor(Math.random() * num)
     activityList.push({
         id: i,
