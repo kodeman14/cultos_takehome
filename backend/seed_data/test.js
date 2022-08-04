@@ -3,6 +3,7 @@ import {image as icon} from "./big_data/icon.js";
 import merchantConfig from "./merchantConfig.js";
 import widgetConfig from "./widgetConfig.js";
 
+/* mock data starts here */
 const activityList = []
 
 const platform = ['Twitter', 'Facebook', 'Instagram']
@@ -14,19 +15,18 @@ const randomDate = (start, end) => {
     );
 };
 
-for (let i = 0; i < 50; i++) {
-    const randomVal = (num) => {
-        return Math.floor(Math.random() * num)
-    }
+for (let i = 1; i <= 100; i++) {
+    const randomVal = (num) => Math.floor(Math.random() * num)
     activityList.push({
         id: i,
         pointsEarned: randomVal(1000),
-        description: `test activity ${i}`,
+        description: `testing activity #${i}`,
         socialType: activity[randomVal(3)],
         socialPlatform: platform[randomVal(3)],
         date: randomDate(new Date(2000, 0, 1), new Date()),
     })
 }
+/* mock data ends here */
 
 export default {
     ...merchantConfig,
