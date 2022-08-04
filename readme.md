@@ -9,8 +9,8 @@
 - [x] Axios / Vue Axios
 - [ ] Moment / Lodash
 
-[Link to Trello Board for project management](https://trello.com/b/dtFLkneN)
-[Link to images hosted on Google Drive]()
+* [Link to Trello Board for project management](https://trello.com/b/dtFLkneN)
+* [Link to images hosted on Google Drive]() (wip)
 
 ---
 
@@ -64,7 +64,8 @@
 - [x] indicate empty box when table not loaded
 - [x] create mock data on backend for easy demo
 - [x] repo has branching strategy and task readme
-- [ ] routing with error (404) and login page [wip]
+- [x] routing with error (404) and login/hello page
+- [x] login status persisted through local storage
 
 ---
 
@@ -83,4 +84,3 @@
 - loading spinner and skeleton structure
 - archiving activity (older than 6 months)
 - profanity filter for modal description
-- manage login through session storage
