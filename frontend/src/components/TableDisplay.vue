@@ -6,6 +6,8 @@
   
   const currPageRef = ref(constants.pageNum)
   const pageSizeRef = ref(constants.pageSize)
+  const mobilePageLayout = "prev, pager, next"
+  const desktopPageLayout = "total, sizes, prev, pager, next"
 </script>
 
 <script>
@@ -111,6 +113,8 @@
       </template>
     </el-table-column>
   </el-table>
+
+  <!-- pagination -->
   <div class="flex justify-center mt-10">
     <el-pagination
       background
@@ -120,7 +124,8 @@
       @size-change="this.handleSizing"
       v-model:currentPage="currPageRef"
       @current-change="this.handlePaging"
-      layout="total, sizes, prev, pager, next"
+      :pager-count="constants.pagerCount"
+      :layout="this.mobileWidth ? mobilePageLayout : desktopPageLayout"
     />
   </div>
 </template>
