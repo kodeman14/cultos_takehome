@@ -26,7 +26,7 @@
       window.removeEventListener("resize", this.onResize);
     },
     methods: {
-      iconConvert(platform) {
+      iconPlatformConvert(platform) {
         switch(platform) {
           case this.translations.socialPlatform.twitter:
             return 'twitter'
@@ -35,7 +35,19 @@
           case this.translations.socialPlatform.instagram:
             return 'instagram'
           default: //fail safe
-            return 'font-awesome'
+            return 'fort-awesome'
+        }
+      },
+      iconActivityConvert(activity) {
+        switch(activity) {
+          case this.translations.socialType.liked:
+            return 'thumbs-up'
+          case this.translations.socialType.shared:
+            return 'share-square'
+          case this.translations.socialType.posted:
+            return 'note-sticky'
+          default: //fail safe
+            return 'ban'
         }
       },
       handleSizing(value) {
@@ -85,14 +97,25 @@
         </p>
       </template>
     </el-table-column>
-    <el-table-column :label="translations.colHeaders.activityCol">
+
+    <!-- platform -->
+    <el-table-column
+      align="center"
+      header-align="center"
+      :label="translations.colHeaders.activityCol"
+    >
       <template #default="scope">
-      <el-row>
-        <el-space>
-          <font-awesome-icon :icon="['fab', this.iconConvert(scope.row.socialPlatform)]" />
-          <p>{{scope.row.socialType}}</p>
-        </el-space>
-      </el-row>
+        <div class="flex justify-center">
+          <el-space>
+            <font-awesome-icon :icon="['fab', this.iconPlatformConvert(scope.row.socialPlatform)]" />
+            <div v-if="this.mobileWidth">
+              <font-awesome-icon :icon="['far', this.iconActivityConvert(scope.row.socialType)]" />
+            </div>
+            <div v-else>
+              <p>{{scope.row.socialType}}</p>
+            </div>
+          </el-space>
+        </div>
       </template>
     </el-table-column>
 
