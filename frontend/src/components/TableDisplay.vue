@@ -12,6 +12,17 @@
   export default {
     props: ['pagedData', 'listLength', 'pageNum', 'pageSize'],
     emits: ['editRow', 'deleteRow', 'sizingChange', 'pagingChange'],
+    data() {
+      return {
+        mobileWidth: window.innerWidth < constants.mobileWidth
+      }
+    },
+    created() {
+      window.addEventListener("resize", this.onResize);
+    },
+    destroyed() {
+      window.removeEventListener("resize", this.onResize);
+    },
     methods: {
       iconConvert(platform) {
         switch(platform) {
@@ -31,6 +42,10 @@
       handlePaging(value) {
         this.$emit('pagingChange', value)
       },
+      onResize(e) {
+        console.log('width', window.innerWidth)
+        this.mobileWidth = window.innerWidth < constants.mobileWidth
+      }
     },
   }
 </script>
