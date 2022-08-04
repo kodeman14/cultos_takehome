@@ -72,9 +72,18 @@
         <p>{{scope.row.date.slice(0, 10)}}</p>
       </template>
     </el-table-column>
-    <el-table-column :label="translations.colHeaders.detailsCol">
+    
+    <!-- details -->
+    <el-table-column 
+      align="center"
+      header-align="center"
+      :label="translations.colHeaders.detailsCol"
+    >
       <template #default="scope">
-        <p>{{translations.placeholders.thanksForText}} {{scope.row.description}}</p>
+        <p>
+          <span v-if="!this.mobileWidth">{{translations.placeholders.thanksForText}}</span>
+          {{scope.row.description}}
+        </p>
       </template>
     </el-table-column>
     <el-table-column :label="translations.colHeaders.activityCol">
