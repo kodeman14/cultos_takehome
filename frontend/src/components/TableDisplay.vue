@@ -12,6 +12,7 @@
 
 <script>
   export default {
+    name: 'TableDisplay',
     props: ['pagedData', 'listLength', 'pageNum', 'pageSize'],
     emits: ['editRow', 'deleteRow', 'sizingChange', 'pagingChange'],
     data() {

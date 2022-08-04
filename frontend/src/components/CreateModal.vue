@@ -37,6 +37,7 @@
 
 <script>  
   export default {
+    name: 'CreateModal',
     props: ['isVisible', 'editFlag', 'activityForm'],
     emits: ['createRow', 'closeModal']
   }
@@ -108,7 +109,7 @@
             <el-button>{{translations.modalInputs.cancelBtn}}</el-button>
           </template>
         </el-popconfirm>
-        <el-button type="primary" @click="this.$emit('createRow', activityForm, ruleFormRef)">
+        <el-button type="primary" @click="this.$emit('createRow', this.activityForm, ruleFormRef)">
           {{translations.modalInputs.submitBtn}}
         </el-button>
       </span>
