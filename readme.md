@@ -50,6 +50,19 @@
 ---
 
 ## Extra Features
+- [x] create translations and constants file
+- [x] show 'n/a' for points if no data exists
+- [x] implement error checking on empty form
+- [x] validation rules added on modal inputs
+- [x] min/max caps placed on details and points
+- [x] snackbar to indicate status on updates
+- [x] modify column names for easy readability
+- [x] allow column sorting on date and points
+- [x] pagination for data with customization
+- [x] indicate empty box when table not loaded
+- [x] create mock data on backend for easy demo
+- [x] repo has branching strategy and task readme
+- [ ] routing with error (404) and login page [wip]
 
 ---
 
