@@ -77,3 +77,8 @@
 ---
 
 ## Future Ideas
+- implement rewards system (work in progress)
+- loading spinner and skeleton structure
+- archiving activity (older than 6 months)
+- profanity filter for modal description
+- manage login through session storage
