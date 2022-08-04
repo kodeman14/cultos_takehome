@@ -55,5 +55,9 @@ export const translations = {
     liked: 'Liked',
     shared: 'Shared',
     posted: 'Posted',
-  }
+  notFound: {
+    goBackBtn: 'Go Back',
+    errorTitle: 'Error 404',
+    errorBody: 'Sorry, page not found',
+  },
 }
