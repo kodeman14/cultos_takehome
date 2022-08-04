@@ -41,7 +41,11 @@
 - [x] refresh page to see deleted row again
 - [x] calculate points on edit/delete actions
 
-### Bonus Tasks
+### Bonus Objectives
+- [x] confirm button on delete
+- [x] add gradient to points earned
+- [x] row color should change on hover
+- [x] mobile view with date column hidden
 
 ---
 
