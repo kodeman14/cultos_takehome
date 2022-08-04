@@ -4,20 +4,9 @@
 
 #app {
   width: 100%;
-  margin: auto;
   height: 100vh;
   display: flex;
-  padding: 2rem;
   position: relative;
   align-items: center;
   justify-content: center;
-}
-
-.box-card {
-  width: 75%;
-}
-
-.cultos-table {
-  width: auto;
-  overflow: visible;
 }
