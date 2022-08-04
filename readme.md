@@ -24,6 +24,14 @@
 - [x] style the modal and table
 
 ### Task 3 (MODAL)
+- [x] add create activity button
+- [x] on button click, modal should appear
+- [x] form elements appearing on modal
+- [x] add cancel/submit buttons
+- [x] on cancel (or x), close modal
+- [x] on submit, post data to api
+- [x] modal should close, table updated
+- [x] refresh page to see new created row
 
 ### Task 4 (ACTIONS)
 
