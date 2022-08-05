@@ -66,6 +66,7 @@
 - [x] repo has branching strategy and task readme
 - [x] routing with error (404) and login/hello page
 - [x] login status persisted through local storage
+- [x] implement loading animation for display table
 
 ---
 
@@ -81,6 +82,6 @@
 
 ## Future Ideas
 - implement rewards system (work in progress)
-- loading spinner and skeleton structure
+- skeleton structure for delay in data display
 - archiving activity (older than 6 months)
 - profanity filter for modal description
