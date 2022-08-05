@@ -7,7 +7,7 @@
   const currPageRef = ref(constants.pageNum)
   const pageSizeRef = ref(constants.pageSize)
   const mobilePageLayout = "prev, pager, next"
-  const desktopPageLayout = "total, sizes, prev, pager, next"
+  const desktopPageLayout = `total, sizes, ${mobilePageLayout}, jumper`
 </script>
 
 <script>
@@ -168,7 +168,7 @@
     <el-pagination
       background
       :total="listLength"
-      :page-sizes="[5, 10]"
+      :page-sizes="[5, 10, 20, 40]"
       v-model:page-size="pageSizeRef"
       @size-change="this.handleSizing"
       v-model:currentPage="currPageRef"
