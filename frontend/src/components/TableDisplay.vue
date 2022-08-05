@@ -13,7 +13,7 @@
 <script>
   export default {
     name: 'TableDisplay',
-    props: ['pagedData', 'listLength', 'pageNum', 'pageSize'],
+    props: ['pagedData', 'listLength', 'pageNum', 'pageSize', 'loadingRef'],
     emits: ['editRow', 'deleteRow', 'sizingChange', 'pagingChange'],
     data() {
       return {
@@ -21,6 +21,7 @@
       }
     },
     created() {
+      console.log('loading', this.loadingRef)
       window.addEventListener("resize", this.onResize);
     },
     destroyed() {
@@ -68,6 +69,8 @@
 <template>
   <el-table
     :data="this.pagedData"
+    v-loading="this.loadingRef"
+    :element-loading-text="translations.loadingText"
     :table-layout="this.mobileWidth ? 'fixed': 'auto'"
     header-cell-class-name="lg:font-extrabold lg:text-xl text-black"
   >

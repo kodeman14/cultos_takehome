@@ -3,6 +3,7 @@ export const translations = {
   yourActivityText: 'Your Activity',
   editActivityText: 'Edit Activity',
   createActivityText: 'Create Activity',
+  loadingText: 'Data is loading',
   placeholders: {
     thanksForText: 'Thanks for ',
     typeSelectText: 'Select activity type',

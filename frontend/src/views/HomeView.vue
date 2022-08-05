@@ -59,6 +59,7 @@
         tableData: [],
         pagedData: [],
         totalPoints: 0,
+        loadingRef: true,
         editFlag: false,
         isEmptyFlag: false,
         isServerDown: true,
@@ -79,10 +80,13 @@
         .then(response => {
           console.log(response.data)
           this.tableData = response.data
-
-          this.setPagedData()
           this.checkEmpty(false)
-          this.calculatePoints()
+
+          setTimeout(() => {
+            this.loadingRef = false
+            this.setPagedData()
+            this.calculatePoints()
+          }, constants.timeout);
         })
         .catch(error => {
           this.checkEmpty(true)
@@ -154,6 +158,7 @@
       },
       closeModal(formRef) {
         if(!formRef) return
+        this.activityForm = { ...this.freshFormFields}
         formRef.resetFields()
         formRef.clearValidate()
         this.modalVisible = false
@@ -213,6 +218,7 @@
         @edit-row="editRow"
         @delete-row="deleteRow"
         :paged-data="this.pagedData"
+        :loading-ref="this.loadingRef"
         @sizing-change="handleSizeChange"
         @paging-change="handlePageChange"
         :list-length="this.tableData.length"
