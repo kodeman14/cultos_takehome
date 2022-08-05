@@ -10,7 +10,7 @@
 - [ ] Moment / Lodash
 
 * [Link to Trello Board for project management](https://trello.com/b/dtFLkneN)
-* [Link to images hosted on Google Drive]() (wip)
+* [Link to images hosted on Github Repo](https://github.com/kodeman14/cultos_takehome/tree/master/screenshots) (wip)
 
 ---
 
@@ -78,10 +78,13 @@
 - abcde
 - 12345
 
+* can talk about these points in call
+
 ---
 
 ## Future Ideas
+- logout and avatar buttons on app top header
 - implement rewards system (work in progress)
-- skeleton structure for delay in data display
 - archiving activity (older than 6 months)
-- profanity filter for modal description
+- profanity filter for text input on modal
+- skeleton structure for delay in data display
