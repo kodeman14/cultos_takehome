@@ -22,7 +22,7 @@
   <el-result
     icon="warning"
     :title="translations.notFound.errorTitle"
-    :sub-title="translations.notFound.errorTitle"
+    :sub-title="translations.notFound.errorBody"
   >
     <template #extra>
       <el-button @click="handleBack" type="primary">

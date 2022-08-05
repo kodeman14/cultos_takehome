@@ -32,7 +32,9 @@ export const translations = {
     serverIssue: 'Server error, try loading again later!',
     missingFields: 'Some fields are missing, check below!',
     axiosSuccess: 'Congrats, row was successfully created',
+    loggedOut: 'You have been logged out, have a good day!',
     rowDelete: 'The row was successfully deleted....for now',
+    wipFeature: 'This feature is not ready yet, be patient!',
     axiosError: 'We ran into an error, please try again later',
   },
   errors: {

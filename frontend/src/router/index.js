@@ -22,7 +22,12 @@ const router = createRouter({
     // {
     //   path: '/rewards',
     //   name: 'rewards',
-    //   component: Rewards
+    //   component: RewardsView
+    // },
+    // {
+    //   path: '/archives',
+    //   name: 'archives',
+    //   component: ArchivePage
     // },
     {
       path: '/:pathMatch(.*)*',
