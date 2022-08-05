@@ -59,8 +59,8 @@
         tableData: [],
         pagedData: [],
         totalPoints: 0,
-        loadingRef: true,
         editFlag: false,
+        loadingRef: true,
         isEmptyFlag: false,
         isServerDown: true,
         modalVisible: false,
@@ -78,15 +78,15 @@
         this.axios
         .post(constants.apiEndpoint + constants.apiList)
         .then(response => {
-          console.log(response.data)
+          console.log('axios res data', response.data)
           this.tableData = response.data
           this.checkEmpty(false)
 
           setTimeout(() => {
-            this.loadingRef = false
             this.setPagedData()
             this.calculatePoints()
-          }, constants.timeout);
+            this.loadingRef = false
+          }, constants.timeout)
         })
         .catch(error => {
           this.checkEmpty(true)
