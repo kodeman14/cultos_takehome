@@ -59,8 +59,8 @@
         tableData: [],
         pagedData: [],
         totalPoints: 0,
-        loadingRef: true,
         editFlag: false,
+        loadingRef: true,
         isEmptyFlag: false,
         isServerDown: true,
         modalVisible: false,
@@ -78,15 +78,15 @@
         this.axios
         .post(constants.apiEndpoint + constants.apiList)
         .then(response => {
-          console.log(response.data)
+          console.log('axios res data', response.data)
           this.tableData = response.data
           this.checkEmpty(false)
 
           setTimeout(() => {
-            this.loadingRef = false
             this.setPagedData()
             this.calculatePoints()
-          }, constants.timeout);
+            this.loadingRef = false
+          }, constants.timeout)
         })
         .catch(error => {
           this.checkEmpty(true)
@@ -203,37 +203,44 @@
 </script>
 
 <template>
-  <el-card class="w-full lg:w-3/4">
-    <!-- main header -->
-    <CardHeader
-      :is-server-down="this.isServerDown"
-      :total-points="this.totalPoints"
-      @open-modal="openModal"
-    />
-    <el-divider />
+  <el-container>
+    <el-header>
+      <NavMenu />
+    </el-header>
+    <el-main>
+      <el-card class="w-full lg:w-3/4 lg:mx-auto">
+        <!-- main header -->
+        <CardHeader
+          :is-server-down="this.isServerDown"
+          :total-points="this.totalPoints"
+          @open-modal="openModal"
+        />
+        <el-divider />
 
-    <!-- conditional table display -->
-    <div v-if="!this.isEmptyFlag && !this.isServerDown">
-      <TableDisplay
-        @edit-row="editRow"
-        @delete-row="deleteRow"
-        :paged-data="this.pagedData"
-        :loading-ref="this.loadingRef"
-        @sizing-change="handleSizeChange"
-        @paging-change="handlePageChange"
-        :list-length="this.tableData.length"
-      />
-    </div>
-    <div v-else>
-      <el-empty :description="translations.errors[
-        this.isEmptyFlag
-        ? 'emptyTable'
-        : this.isServerDown
-          ? 'noDataLoaded'
-          : 'otherIssue'
-      ]" />
-    </div>
-  </el-card>
+        <!-- conditional table display -->
+        <div v-if="!this.isEmptyFlag && !this.isServerDown">
+          <TableDisplay
+            @edit-row="editRow"
+            @delete-row="deleteRow"
+            :paged-data="this.pagedData"
+            :loading-ref="this.loadingRef"
+            @sizing-change="handleSizeChange"
+            @paging-change="handlePageChange"
+            :list-length="this.tableData.length"
+          />
+        </div>
+        <div v-else>
+          <el-empty :description="translations.errors[
+            this.isEmptyFlag
+            ? 'emptyTable'
+            : this.isServerDown
+              ? 'noDataLoaded'
+              : 'otherIssue'
+          ]" />
+        </div>
+      </el-card>
+    </el-main>
+  </el-container>
 
   <!-- create activity modal -->
   <CreateModal

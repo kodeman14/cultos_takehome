@@ -1,13 +1,23 @@
 <script setup>
   import { constants } from '../assets/constants'
   import { translations } from '../assets/translations'
+
+  import { ElMessage } from 'element-plus'
 </script>
 
 <script>
   export default {
     name: 'CardHeader',
     props: ['isServerDown', 'totalPoints'],
-    emits: ['openModal']
+    emits: ['openModal'],
+    methods: {
+      wipFeature() {
+        ElMessage({
+          message: translations.snackbars.wipFeature,
+          type: 'info',
+        })
+      }
+    }
   }
 </script>
 
@@ -21,12 +31,21 @@
       </span>
     </h1>
     <div></div>
-    <el-button
-      type="primary"
-      class="button lg:float-right flex lg:block w-1/2 mx-auto lg:mx-0"
-      @click="this.$emit('openModal', false)"
-    >
-      {{translations.createActivityText}}
-    </el-button>
+    <div class="flex flex-row">
+      <el-button
+        type="primary"
+        class="button lg:float-right flex lg:block mx-auto lg:mx-0"
+        @click="this.$emit('openModal', false)"
+      >
+        {{translations.createActivityText}}
+      </el-button>
+      <el-button
+        type="danger"
+        class="button lg:float-right flex lg:block mx-auto lg:mx-0"
+        @click="wipFeature"
+      >
+        {{'Search'}}
+      </el-button>
+    </div>
   </div>
 </template>
