@@ -1,9 +1,16 @@
 export const translations = {
+  loadingText: 'Data is loading',
   totalEarnedText: 'Total Earned:',
   yourActivityText: 'Your Activity',
   editActivityText: 'Edit Activity',
   createActivityText: 'Create Activity',
-  loadingText: 'Data is loading',
+  sectionNames: {
+    searchLabel: 'Search',
+    rewardLabel: 'Rewards',
+    profileLabel: 'Profile',
+    archiveLabel: 'Archives',
+    companyLabel: 'ATEM_LABS',
+  },
   placeholders: {
     thanksForText: 'Thanks for ',
     typeSelectText: 'Select activity type',
@@ -61,6 +68,7 @@ export const translations = {
   },
   loginForm: {
     resetBtn: 'Reset',
+    logoutBtn: 'Logout',
     username: 'Username',
     password: 'Password',
     signinBtn: 'Sign In',

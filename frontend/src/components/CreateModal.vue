@@ -35,7 +35,7 @@
   })
 </script>
 
-<script>  
+<script>
   export default {
     name: 'CreateModal',
     props: ['isVisible', 'editFlag', 'activityForm'],
@@ -46,8 +46,7 @@
       }
     },
     methods: {
-      onResize(e) {
-        console.log('width', window.innerWidth)
+      onResize() {
         this.mobileWidth = window.innerWidth < constants.mobileWidth
       }
     },

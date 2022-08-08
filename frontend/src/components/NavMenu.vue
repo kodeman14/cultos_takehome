@@ -5,14 +5,14 @@
     class="absolute top-0"
     @select="handleSelect"
   >
-    <el-menu-item index="0">ATEM_LABS</el-menu-item>
+    <el-menu-item index="0">{{translations.sectionNames.companyLabel}}</el-menu-item>
     <div class="flex-grow"></div>
-    <el-menu-item index="1">Rewards</el-menu-item>
-    <el-menu-item index="2">Archives</el-menu-item>
+    <el-menu-item index="1">{{translations.sectionNames.rewardLabel}}</el-menu-item>
+    <el-menu-item index="2">{{translations.sectionNames.archiveLabel}}</el-menu-item>
     <el-sub-menu index="3">
       <template #title>Options</template>
-      <el-menu-item index="a">Profile (wip)</el-menu-item>
-      <el-menu-item index="b">Logout</el-menu-item>
+      <el-menu-item index="a">{{translations.sectionNames.profileLabel}}</el-menu-item>
+      <el-menu-item index="b">{{translations.loginForm.logoutBtn}}</el-menu-item>
     </el-sub-menu>
   </el-menu>
 </template>

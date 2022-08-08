@@ -4,21 +4,19 @@ import router from '../router'
 export const useAuthStore = defineStore({
   id: 'auth',
   state: () => ({
-    user: JSON.parse(localStorage.getItem('userObj')),
     loginStatus: false,
-    returnUrl: null,
+    user: JSON.parse(localStorage.getItem('userObj')),
   }),
   getters: {
     signedIn: (state) => state.loginStatus = localStorage.getItem('statusBool')
   },
   actions: {
     loginApp(formData) {
-      console.log('arrived login')
       this.user = formData
       this.loginStatus = true
       localStorage.setItem('userObj', JSON.stringify(formData))
       localStorage.setItem('statusBool', this.loginStatus)
-      router.push(this.returnUrl || '/list')
+      router.push('/list')
     },
     logoutApp() {
       this.user = null

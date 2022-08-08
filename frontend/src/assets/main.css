@@ -10,3 +10,29 @@
   align-items: center;
   justify-content: center;
 }
+
+table {
+  border-spacing: 0 1em;
+}
+th .cell {
+  white-space: nowrap !important;
+}
+td .cell {
+  display: flex;
+  white-space: nowrap !important;
+  justify-content: center;
+}
+td {
+  border: solid 1px #000 !important;
+  border-style: solid none !important;
+}
+td:first-child {
+  border-left-style: solid;
+  border-top-left-radius: 30px;
+  border-bottom-left-radius: 30px;
+}
+td:last-child {
+  border-right-style: solid;
+  border-top-right-radius: 20px; 
+  border-bottom-right-radius: 20px;
+}

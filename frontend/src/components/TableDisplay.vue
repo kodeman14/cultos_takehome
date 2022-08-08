@@ -8,6 +8,15 @@
   const pageSizeRef = ref(constants.pageSize)
   const mobilePageLayout = "prev, pager, next"
   const desktopPageLayout = `total, sizes, ${mobilePageLayout}, jumper`
+
+  const filterOptions = [
+    { text: translations.socialType.liked, value: translations.socialType.liked },
+    { text: translations.socialType.shared, value: translations.socialType.shared },
+    { text: translations.socialType.posted, value: translations.socialType.posted },
+    { text: translations.socialPlatform.twitter, value: translations.socialPlatform.twitter },
+    { text: translations.socialPlatform.facebook, value: translations.socialPlatform.facebook },
+    { text: translations.socialPlatform.instagram, value: translations.socialPlatform.instagram },
+  ]
 </script>
 
 <script>
@@ -21,7 +30,6 @@
       }
     },
     created() {
-      console.log('loading', this.loadingRef)
       window.addEventListener("resize", this.onResize)
     },
     destroyed() {
@@ -30,11 +38,11 @@
     methods: {
       iconPlatformConvert(platform) {
         switch(platform) {
-          case this.translations.socialPlatform.twitter:
+          case translations.socialPlatform.twitter:
             return 'twitter'
-          case this.translations.socialPlatform.facebook:
+          case translations.socialPlatform.facebook:
             return 'facebook'
-          case this.translations.socialPlatform.instagram:
+          case translations.socialPlatform.instagram:
             return 'instagram'
           default: //fail safe
             return 'fort-awesome'
@@ -42,11 +50,11 @@
       },
       iconActivityConvert(activity) {
         switch(activity) {
-          case this.translations.socialType.liked:
+          case translations.socialType.liked:
             return 'thumbs-up'
-          case this.translations.socialType.shared:
+          case translations.socialType.shared:
             return 'share-square'
-          case this.translations.socialType.posted:
+          case translations.socialType.posted:
             return 'note-sticky'
           default: //fail safe
             return 'ban'
@@ -59,15 +67,18 @@
         this.$emit('pagingChange', value)
       },
       onResize(e) {
-        console.log('width', window.innerWidth)
         this.mobileWidth = window.innerWidth < constants.mobileWidth
-      }
+      },
+      filterHandler(value, row) {
+        return row.socialPlatform === value || row.socialType === value
+      },
     },
   }
 </script>
 
 <template>
   <el-table
+    max-height="500px"
     :data="this.pagedData"
     v-loading="this.loadingRef"
     :element-loading-text="translations.loadingText"
@@ -87,10 +98,11 @@
         <p>{{scope.row.date.slice(0, 10)}}</p>
       </template>
     </el-table-column>
-    
+
     <!-- details -->
-    <el-table-column 
+    <el-table-column
       align="center"
+      prop="description"
       header-align="center"
       :label="translations.colHeaders.detailsCol"
     >
@@ -106,6 +118,10 @@
     <el-table-column
       align="center"
       header-align="center"
+      :filters="filterOptions"
+      filter-placement="right-start"
+      :filter-method="filterHandler"
+      :filter-multiple="false"
       :label="translations.colHeaders.activityCol"
     >
       <template #default="scope">
@@ -171,7 +187,7 @@
     <el-pagination
       background
       :total="listLength"
-      :page-sizes="[5, 10, 20, 40]"
+      :page-sizes="[10, 20, 40, 80]"
       v-model:page-size="pageSizeRef"
       @size-change="this.handleSizing"
       v-model:currentPage="currPageRef"
@@ -181,9 +197,3 @@
     />
   </div>
 </template>
-
-<style>
-  .el-table th .cell {
-    white-space: nowrap !important;
-  }
-</style>
