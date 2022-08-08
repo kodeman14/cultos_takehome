@@ -44,7 +44,7 @@
         class="button lg:float-right flex lg:block mx-auto lg:mx-0"
         @click="wipFeature"
       >
-        {{'Search'}}
+        {{translations.sectionNames.searchLabel}}
       </el-button>
     </div>
   </div>
