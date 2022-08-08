@@ -54,8 +54,8 @@
     },
     data() {
       return {
-        pageNum: 1,
-        pageSize: 5,
+        pageNum: constants.pageNum,
+        pageSize: constants.pageSize,
         tableData: [],
         pagedData: [],
         totalPoints: 0,

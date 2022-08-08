@@ -1,6 +1,6 @@
 export const constants = {
   pageNum: 1,
-  pageSize: 5,
+  pageSize: 10,
   timeout: 250,
   pagerCount: 3,
   mobileWidth: 500,
