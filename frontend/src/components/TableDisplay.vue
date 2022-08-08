@@ -30,7 +30,6 @@
       }
     },
     created() {
-      console.log('loading', this.loadingRef)
       window.addEventListener("resize", this.onResize)
     },
     destroyed() {
@@ -68,7 +67,6 @@
         this.$emit('pagingChange', value)
       },
       onResize(e) {
-        console.log('width', window.innerWidth)
         this.mobileWidth = window.innerWidth < constants.mobileWidth
       },
       filterHandler(value, row) {

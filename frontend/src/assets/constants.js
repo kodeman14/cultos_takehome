@@ -7,17 +7,18 @@ export const constants = {
   descMinLength: 5,
   descMaxLength: 50,
   pointsAmtStep: 10,
+  startingPoints: 10,
   pointsAmtMax: 1000,
   noPointsExist: 'N/A',
   apiList: 'api/MyActivity/list',
   apiCreate: 'api/MyActivity/create',
   apiEndpoint: 'http://localhost:1938/',
   gradientStyle: [
-    'font-extrabold',
-    'text-transparent',
+    'to-pink-400',
     'bg-clip-text',
-    'bg-gradient-to-r',
+    'font-extrabold',
     'from-purple-300',
-    'to-pink-400'
+    'bg-gradient-to-r',
+    'text-transparent',
   ],
 }

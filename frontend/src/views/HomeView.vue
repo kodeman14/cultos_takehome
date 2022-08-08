@@ -4,7 +4,7 @@
 
   import { constants } from '../assets/constants'
   import { translations } from '../assets/translations'
-  
+
   import CardHeader from '../components/CardHeader.vue'
   import CreateModal from '../components/CreateModal.vue'
   import TableDisplay from '../components/TableDisplay.vue'
@@ -12,8 +12,8 @@
   const defaultForm = reactive({
     socialType: '',
     description: '',
-    pointsEarned: 10,
     socialPlatform: '',
+    pointsEarned: constants.startingPoints,
   })
 
   const inputRules = reactive({
@@ -78,7 +78,6 @@
         this.axios
         .post(constants.apiEndpoint + constants.apiList)
         .then(response => {
-          console.log('axios res data', response.data)
           this.tableData = response.data
           this.checkEmpty(false)
 
@@ -103,7 +102,6 @@
       },
       setFormScratch() {
         this.editFlag = false
-        console.log('default', this.freshFormFields)
         this.activityForm = { ... this.freshFormFields }
       },
       createRow(formData, formRef) {
@@ -165,12 +163,10 @@
       },
       editRow(rowData) {
         const rowInfo = this.getRawInfo(rowData)
-        console.log('edit', rowInfo)
         this.openModal(true, rowInfo)
       },
       deleteRow(index) {
         this.tableData.splice(index, 1)
-        console.log('deleted', this.tableData)
 
         this.setPagedData()
         this.checkEmpty(false)

@@ -13,7 +13,6 @@ export const useAuthStore = defineStore({
   },
   actions: {
     loginApp(formData) {
-      console.log('arrived login')
       this.user = formData
       this.loginStatus = true
       localStorage.setItem('userObj', JSON.stringify(formData))
