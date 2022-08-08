@@ -200,7 +200,7 @@
 
 <template>
   <el-container>
-    <el-header>
+    <el-header class="contents">
       <NavMenu />
     </el-header>
     <el-main>
