@@ -67,6 +67,7 @@
 </script>
 
 <template>
+  <el-scrollbar max-height="500px">
   <el-table
     :data="this.pagedData"
     v-loading="this.loadingRef"
@@ -165,6 +166,7 @@
       </template>
     </el-table-column>
   </el-table>
+  </el-scrollbar>
 
   <!-- pagination -->
   <div class="flex justify-center mt-10">
