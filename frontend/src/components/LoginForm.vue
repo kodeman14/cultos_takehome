@@ -55,7 +55,7 @@
       </el-form-item>
     </el-form>
 
-    <span class="dialog-footer">
+    <span class="flex justify-center">
       <el-button @click="formReset">
         {{translations.loginForm.resetBtn}}
       </el-button>

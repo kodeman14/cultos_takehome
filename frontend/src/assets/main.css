@@ -19,6 +19,7 @@ th .cell {
 }
 td .cell {
   display: flex;
+  white-space: nowrap !important;
   justify-content: center;
 }
 td {
